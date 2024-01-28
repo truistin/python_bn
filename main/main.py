@@ -63,7 +63,7 @@ def time_calc():
         it.sum_price = 0
     for key, value in dic.items():
         if 'PERP' in key.op_symbol:
-            thresh = key.thresh / value.thresh
+            thresh = (key.thresh - value.thresh) / value.thresh
             logging.info("time calc key symbol : {}, value symbol : {}, key thresh : {}, value thresh : {}, thresh : {}"\
                 .format(key.symbol, value.symbol , key.thresh, value.thresh, thresh))
 
