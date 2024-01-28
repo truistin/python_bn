@@ -49,8 +49,8 @@ def message_handler(_, message):
     print(message)
     obj = json.loads(message)
     for it in lst:
-        if it.symbol == obj.s:
-            it.calc(obj.a, obj.b, obj.T)
+        if it.symbol == obj["s"]:
+            it.calc(obj["a"], obj["b"], obj["T"])
 
 def time_calc():
     for it in lst:
