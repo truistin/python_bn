@@ -15,18 +15,17 @@ config_logging(logging, logging.DEBUG)
 class symbolInfo:
     def __init__(self, symbol):
         self.symbol = symbol
-    symbol = ""
-    mid_price = 0
-    sum_price = 0
-    time_stamp = 0 
-    thresh = 0
-    num = 0
+        self.sum_price = 0
+        self.mid_price = 0
+        self.time_stamp = 0 
+        self.thresh = 0
+        self.num = 0
 
     def calc(self, ask, bid, stamp):
-        mid_price = (float(ask) + float(bid)) / float(2)
-        sum_price = sum_price + mid_price
-        num = num + 1
-        time_stamp = int(stamp)
+        self.mid_price = (float(ask) + float(bid)) / float(2)
+        self.sum_price = self.sum_price + self.mid_price
+        self.num = self.num + 1
+        self.time_stamp = int(stamp)
 
 
 eth_perp_sy = symbolInfo("ETHUSD_PERP")
