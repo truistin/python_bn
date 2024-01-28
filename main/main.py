@@ -22,7 +22,7 @@ class symbolInfo:
     thresh = 0
     num = 0
 
-    def calc(ask, bid, stamp):
+    def calc(self, ask, bid, stamp):
         mid_price = (ask + bid) / 2
         sum_price = sum_price + mid_price
         num = num + 1
