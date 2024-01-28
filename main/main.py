@@ -15,7 +15,7 @@ config_logging(logging, logging.DEBUG)
 class symbolInfo:
     def __init__(self, symbol, op_symbol):
         self.symbol = symbol
-        self.symbol = op_symbol
+        self.op_symbol = op_symbol
         self.sum_price = 0
         self.mid_price = 0
         self.time_stamp = 0 
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     subscribeCM()
 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(time_calc, 'interval', seconds=300)
+    scheduler.add_job(time_calc, 'interval', seconds=100)
     scheduler.start()
 
     while True:  
