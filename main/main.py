@@ -23,10 +23,10 @@ class symbolInfo:
     num = 0
 
     def calc(self, ask, bid, stamp):
-        mid_price = (ask + bid) / 2
+        mid_price = (float(ask) + float(bid)) / float(2)
         sum_price = sum_price + mid_price
         num = num + 1
-        time_stamp = stamp
+        time_stamp = int(stamp)
 
 
 eth_perp_sy = symbolInfo("ETHUSD_PERP")
@@ -46,7 +46,7 @@ lst.append(btc_swap_sy)
 lst.append(sol_swap_sy)
 
 def message_handler(_, message):
-    print(message)
+    # print(message)
     obj = json.loads(message)
     for it in lst:
         if it.symbol == obj["s"]:
