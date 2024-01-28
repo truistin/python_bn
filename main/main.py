@@ -13,8 +13,9 @@ from apscheduler.schedulers.background import BackgroundScheduler
 config_logging(logging, logging.DEBUG)
 
 class symbolInfo:
-    def __init__(self, symbol):
+    def __init__(self, symbol, op_symbol):
         self.symbol = symbol
+        self.symbol = op_symbol
         self.sum_price = 0
         self.mid_price = 0
         self.time_stamp = 0 
@@ -28,13 +29,15 @@ class symbolInfo:
         self.time_stamp = int(stamp)
 
 
-eth_perp_sy = symbolInfo("ETHUSD_PERP")
-btc_perp_sy = symbolInfo("BTCUSD_PERP")
-sol_perp_sy = symbolInfo("SOLUSD_PERP")
+eth_perp_sy = symbolInfo("ETHUSD_PERP", "ETHUSDT")
+btc_perp_sy = symbolInfo("BTCUSD_PERP", "BTCUSDT")
+sol_perp_sy = symbolInfo("SOLUSD_PERP", "SOLUSDT")
 
-eth_swap_sy = symbolInfo("ETHUSDT")
-btc_swap_sy = symbolInfo("BTCUSDT")
-sol_swap_sy = symbolInfo("SOLUSDT")
+eth_swap_sy = symbolInfo("ETHUSDT", "ETHUSD_PERP")
+btc_swap_sy = symbolInfo("BTCUSDT", "BTCUSD_PERP")
+sol_swap_sy = symbolInfo("SOLUSDT", "SOLUSD_PERP")
+
+dic = {eth_swap_sy:eth_perp_sy, btc_swap_sy:btc_perp_sy, sol_swap_sy:sol_perp_sy}
 
 lst = []
 lst.append(eth_perp_sy)
@@ -59,6 +62,12 @@ def time_calc():
                     .format(it.symbol, it.thresh, it.time_stamp, it.mid_price, it.sum_price, it.num))
         it.num = 0
         it.sum_price = 0
+    for key, value in dic.items():
+        if 'PERP' not in value:
+            thresh = key.thresh / value.thresh
+            logging.info("time calc key symbol : {}, value symbol : {}, key thresh : {}, value thresh : {}, thresh : {}"\
+                .format(key.symbol, value.symbol , key.thresh, value.thresh, thresh))
+
         
 
 def subscribeUM():
