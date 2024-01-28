@@ -284,8 +284,8 @@ class BinanceMR(object):
 if __name__ == '__main__':
     #apikey = 'qrNt0VO8sdAbeLS0bAMbtDyip67ZwVUFU6XGVtlQw1anjeiyLOwfNrcVdqIAMyMR'
     #secretkey = '8aEKZ23CEBAECqDUG7XD5hJuDAUtsUe1f8uNoh0NOAMKL12ySTDfbV5hjQzJcqrG'
-    apikey = '7uky94bXR47G1ry1q7djuh6PVItKGdqKwXx4audvl5DzvR6XCMhJhCg1xECIJj7D'
-    secretkey = 'T8mFrsqJylHa2spAw4FN6p0HYOCPdnsBnIhrAf5BuT628s3rjR6yjPEUYW34IFve'
+    apikey = '3IepehoMkZWXPq7vnZmpPHVitb3YXrw35SCuIHjui1AFAuqJeF879Sw8hzbLDRXx'
+    secretkey = 'ssFbZD2aiBnN6INEGtreutHGdvNZIMxbj1SpyFvk2VdolwijcWZ9C5bpyfNuw1iX'
     binanceMr = BinanceMR(apikey,secretkey)
     binanceMr.initialize()
     binanceMr.calc_uniAccount_equity_im_mmr()
