@@ -94,4 +94,7 @@ if __name__ == "__main__":
     scheduler = BackgroundScheduler()
     scheduler.add_job(time_calc, 'interval', seconds=300)
     scheduler.start()
+
+    while True:  
+        time.sleep(1)  # 保持程序运行
     
