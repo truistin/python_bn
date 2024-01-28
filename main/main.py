@@ -57,13 +57,12 @@ def message_handler(_, message):
 def time_calc():
     for it in lst:
         it.thresh = it.sum_price / it.num
-        logging.info("time calc symbol : {}, thresh : {}, timestamp : {}, \
-                    mid_price : {}, sum_price : {}, num : {} "\
+        logging.info("time calc symbol : {}, thresh : {}, timestamp : {}, mid_price : {}, sum_price : {}, num : {} "\
                     .format(it.symbol, it.thresh, it.time_stamp, it.mid_price, it.sum_price, it.num))
         it.num = 0
         it.sum_price = 0
     for key, value in dic.items():
-        if 'PERP' in value.op_symbol:
+        if 'PERP' in key.op_symbol:
             thresh = key.thresh / value.thresh
             logging.info("time calc key symbol : {}, value symbol : {}, key thresh : {}, value thresh : {}, thresh : {}"\
                 .format(key.symbol, value.symbol , key.thresh, value.thresh, thresh))
@@ -102,7 +101,7 @@ if __name__ == "__main__":
     subscribeCM()
 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(time_calc, 'interval', seconds=100)
+    scheduler.add_job(time_calc, 'interval', seconds=60)
     scheduler.start()
 
     while True:  
