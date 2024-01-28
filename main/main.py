@@ -55,7 +55,8 @@ def time_calc():
     for it in lst:
         it.thresh = it.sum_price / it.num
         logging.info("time calc symbol : {}, thresh : {}, timestamp : {}, \
-                    mid_price : {}, ".format(it.symbol, it.thresh, it.time_stamp, it.mid_price))
+                    mid_price : {}, sum_price : {}, num : {} "\
+                    .format(it.symbol, it.thresh, it.time_stamp, it.mid_price, it.sum_price, it.num))
         it.num = 0
         it.sum_price = 0
         
