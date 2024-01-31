@@ -45,7 +45,6 @@ bch_perp_sy = symbolInfo("BCHUSD_PERP", "BCHUSDT")
 link_perp_sy = symbolInfo("LINKUSD_PERP", "LINKUSDT")
 
 op_perp_sy = symbolInfo("OPUSD_PERP", "OPUSDT")
-sol_perp_sy = symbolInfo("SOlUSD_PERP", "SOLUSDT")
 bnb_perp_sy = symbolInfo("BNBUSD_PERP", "BNBUSDT")
 dot_perp_sy = symbolInfo("DOTUSD_PERP", "DOTUSDT")
 matic_perp_sy = symbolInfo("MATICUSD_PERP", "MATICUSDT")
@@ -64,7 +63,6 @@ bch_swap_sy = symbolInfo("BCHUSDT", "BCHUSD_PERP")
 link_swap_sy = symbolInfo("LINKUSDT", "LINKUSD_PERP")
 
 op_swap_sy = symbolInfo("OPUSDT", "OPUSD_PERP")
-sol_swap_sy = symbolInfo("SOlUSDT", "SOlUSD_PERP")
 bnb_swap_sy = symbolInfo("BNBUSDT", "BNBUSD_PERP")
 dot_swap_sy = symbolInfo("DOTUSDT", "DOTUSD_PERP")
 matic_swap_sy = symbolInfo("MATICUSDT", "MATICUSD_PERP")
@@ -124,27 +122,36 @@ def message_handler(_, message):
 def time_calc():
     for it in lst:
         it.avg_mid_price = it.sum_price / it.num
-        # logging.info("time calc symbol : {}, avg_mid_price : {}, timestamp : {}, mid_price : {}, sum_price : {}, num : {} "\
-        #             .format(it.symbol, it.avg_mid_price, it.time_stamp, it.mid_price, it.sum_price, it.num))
+        logging.info("time calc key symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}"\
+            .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh))        
         it.num = 0
         it.sum_price = 0
     for key, value in dic.items():
         if 'PERP' in key.op_symbol:
             thresh = (key.avg_mid_price - value.avg_mid_price) / value.avg_mid_price
-
-            logging.info("time calc key symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}"\
-                .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh))
             if thresh >= 0.0006:
                 logging.info("valid symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}"\
                     .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh))
-
-        
 
 def subscribeUM():
     my_client = UMFuturesWebsocketClient(on_message=message_handler)
     my_client.book_ticker(symbol="ethusdt")
     my_client.book_ticker(symbol="btcusdt")
     my_client.book_ticker(symbol="solusdt")
+
+    my_client.book_ticker(symbol="adausdt")
+    my_client.book_ticker(symbol="filusdt")
+    my_client.book_ticker(symbol="avaxusdt")
+    my_client.book_ticker(symbol="bchusdt")
+    my_client.book_ticker(symbol="linkusdt")
+
+    my_client.book_ticker(symbol="opusdt")
+    my_client.book_ticker(symbol="bnbusdt")
+    my_client.book_ticker(symbol="dotusdt")
+    my_client.book_ticker(symbol="maticusdt")
+    my_client.book_ticker(symbol="dogeusdt")
+    my_client.book_ticker(symbol="ltcusdt")
+    my_client.book_ticker(symbol="xrpusdt")
 
 def subscribeCM():
     my_client = CMFuturesWebsocketClient(on_message=message_handler)
@@ -165,6 +172,78 @@ def subscribeCM():
         id=13,
         callback=message_handler,
         symbol="solusd_perp",
+    )
+
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="adausd_perp",
+    )
+
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="filusd_perp",
+    )
+
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="avaxusd_perp",
+    )
+
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="bchusd_perp",
+    )
+
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="linkusd_perp",
+    )
+
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="opusd_perp",
+    )
+
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="bnbusd_perp",
+    )
+
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="dotusd_perp",
+    )
+
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="maticusd_perp",
+    )
+
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="dogeusd_perp",
+    )
+
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="ltcusd_perp",
+    )
+
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="xrpusd_perp",
     )
 
 if __name__ == "__main__":
