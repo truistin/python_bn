@@ -270,7 +270,7 @@ if __name__ == "__main__":
     subscribeCM()
 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(time_calc, 'interval', seconds=100)
+    scheduler.add_job(time_calc, 'interval', seconds=600)
     scheduler.start()
 
     while True:  
