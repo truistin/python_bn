@@ -134,8 +134,8 @@ def time_calc():
         for it in lst:
             try:
                 it.avg_mid_price = it.sum_price / it.num
-                logging.info("time calc key symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}"\
-                    .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh))        
+                logging.info("time calc key symbol : {}, op symbol : {},  avg_mid_price : {}, mid_price : {}, thresh : {}"\
+                    .format(it.symbol, it.op_symbol , it.avg_mid_price, it.mid_price, thresh))        
                 it.num = 0
                 it.sum_price = 0
             except ZeroDivisionError:
