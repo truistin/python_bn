@@ -9,6 +9,7 @@ import schedule
 import time  
 from apscheduler.schedulers.background import BackgroundScheduler  
 from decimal import Decimal
+from datetime import datetime  
 
 
 # 创建一个logger  
@@ -142,8 +143,9 @@ def time_calc():
             if 'PERP' in key.op_symbol:
                 thresh = (key.avg_mid_price - value.avg_mid_price) / value.avg_mid_price
                 if thresh >= 0.0006:
-                    logging.info("valid symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}"\
-                        .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh))  
+                    utc_now = datetime.utcnow() 
+                    logging.info("valid symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}, time : {}"\
+                        .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh, utc_now))  
 
 def subscribeUM():
     my_client = UMFuturesWebsocketClient(on_message=message_handler)
