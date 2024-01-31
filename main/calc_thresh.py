@@ -70,7 +70,10 @@ doge_swao_sy = symbolInfo("DOGEUSDT", "DOGEUSD_PERP")
 ltc_swap_sy = symbolInfo("LTCUSDT", "LTCUSD_PERP")
 xrp_swap_sy = symbolInfo("XRPUSDT", "XRPUSD_PERP")
 
-dic = {eth_swap_sy:eth_perp_sy, btc_swap_sy:btc_perp_sy, sol_swap_sy:sol_perp_sy}
+dic = {eth_swap_sy:eth_perp_sy, btc_swap_sy:btc_perp_sy, sol_swap_sy:sol_perp_sy, ada_swap_sy:ada_perp_sy\
+       , fil_swap_sy:fil_perp_sy, avax_swap_sy:avax_perp_sy, bch_swap_sy:bch_perp_sy, link_swap_sy:link_perp_sy\
+        , op_swap_sy:op_perp_sy, bnb_swap_sy:bnb_perp_sy, dot_swap_sy:dot_perp_sy, matic_swap_sy:matic_perp_sy\
+        , doge_swao_sy:doge_perp_sy, ltc_swap_sy:ltc_perp_sy, xrp_swap_sy:xrp_perp_sy}
 
 lst = []
 lst.append(eth_perp_sy)
@@ -84,7 +87,6 @@ lst.append(bch_perp_sy)
 lst.append(link_perp_sy)
 
 lst.append(op_perp_sy)
-lst.append(sol_perp_sy)
 lst.append(bnb_perp_sy)
 lst.append(dot_perp_sy)
 lst.append(matic_perp_sy)
@@ -103,7 +105,6 @@ lst.append(bch_swap_sy)
 lst.append(link_swap_sy)
 
 lst.append(op_swap_sy)
-lst.append(sol_swap_sy)
 lst.append(bnb_swap_sy)
 lst.append(dot_swap_sy)
 lst.append(matic_swap_sy)
@@ -128,7 +129,7 @@ def time_calc():
                 it.num = 0
                 it.sum_price = 0
             except ZeroDivisionError:
-                logging.info("exception symbo: {}".format(it.symbol))
+                logging.info("exception symbol: {}".format(it.symbol))
         for key, value in dic.items():
             if 'PERP' in key.op_symbol:
                 thresh = (key.avg_mid_price - value.avg_mid_price) / value.avg_mid_price
