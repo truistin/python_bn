@@ -16,7 +16,7 @@ logger = logging.getLogger('my_logger')
 logger.setLevel(logging.INFO)  
   
 # 创建一个文件处理器，并设置日志级别和格式化器  
-file_handler = logging.FileHandler('example.log')  
+file_handler = logging.FileHandler('thresh_calc.log')  
 file_handler.setLevel(logging.INFO)  
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')  
 file_handler.setFormatter(formatter)  
