@@ -120,18 +120,21 @@ def message_handler(_, message):
             it.calc(obj["a"], obj["b"], obj["T"])
 
 def time_calc():
-    for it in lst:
-        it.avg_mid_price = it.sum_price / it.num
-        logging.info("time calc key symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}"\
-            .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh))        
-        it.num = 0
-        it.sum_price = 0
-    for key, value in dic.items():
-        if 'PERP' in key.op_symbol:
-            thresh = (key.avg_mid_price - value.avg_mid_price) / value.avg_mid_price
-            if thresh >= 0.0006:
-                logging.info("valid symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}"\
-                    .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh))
+        for it in lst:
+            try:
+                it.avg_mid_price = it.sum_price / it.num
+                logging.info("time calc key symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}"\
+                    .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh))        
+                it.num = 0
+                it.sum_price = 0
+            except ZeroDivisionError:
+                logging.info("exception symbo: {}".format(it.symbol))
+        for key, value in dic.items():
+            if 'PERP' in key.op_symbol:
+                thresh = (key.avg_mid_price - value.avg_mid_price) / value.avg_mid_price
+                if thresh >= 0.0006:
+                    logging.info("valid symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}"\
+                        .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh))  
 
 def subscribeUM():
     my_client = UMFuturesWebsocketClient(on_message=message_handler)
