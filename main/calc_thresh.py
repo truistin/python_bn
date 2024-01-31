@@ -159,13 +159,13 @@ def subscribeUM():
     my_client.book_ticker(symbol="bchusdt")
     my_client.book_ticker(symbol="linkusdt")
 
-    # my_client.book_ticker(symbol="opusdt")
-    # my_client.book_ticker(symbol="bnbusdt")
-    # my_client.book_ticker(symbol="dotusdt")
-    # my_client.book_ticker(symbol="maticusdt")
-    # my_client.book_ticker(symbol="dogeusdt")
-    # my_client.book_ticker(symbol="ltcusdt")
-    # my_client.book_ticker(symbol="xrpusdt")
+    my_client.book_ticker(symbol="opusdt")
+    my_client.book_ticker(symbol="bnbusdt")
+    my_client.book_ticker(symbol="dotusdt")
+    my_client.book_ticker(symbol="maticusdt")
+    my_client.book_ticker(symbol="dogeusdt")
+    my_client.book_ticker(symbol="ltcusdt")
+    my_client.book_ticker(symbol="xrpusdt")
 
 def subscribeCM():
     my_client = CMFuturesWebsocketClient(on_message=message_handler)
@@ -218,47 +218,47 @@ def subscribeCM():
         symbol="linkusd_perp",
     )
 
-    # my_client.book_ticker(
-    #     id=13,
-    #     callback=message_handler,
-    #     symbol="opusd_perp",
-    # )
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="opusd_perp",
+    )
 
-    # my_client.book_ticker(
-    #     id=13,
-    #     callback=message_handler,
-    #     symbol="bnbusd_perp",
-    # )
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="bnbusd_perp",
+    )
 
-    # my_client.book_ticker(
-    #     id=13,
-    #     callback=message_handler,
-    #     symbol="dotusd_perp",
-    # )
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="dotusd_perp",
+    )
 
-    # my_client.book_ticker(
-    #     id=13,
-    #     callback=message_handler,
-    #     symbol="maticusd_perp",
-    # )
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="maticusd_perp",
+    )
 
-    # my_client.book_ticker(
-    #     id=13,
-    #     callback=message_handler,
-    #     symbol="dogeusd_perp",
-    # )
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="dogeusd_perp",
+    )
 
-    # my_client.book_ticker(
-    #     id=13,
-    #     callback=message_handler,
-    #     symbol="ltcusd_perp",
-    # )
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="ltcusd_perp",
+    )
 
-    # my_client.book_ticker(
-    #     id=13,
-    #     callback=message_handler,
-    #     symbol="xrpusd_perp",
-    # )
+    my_client.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="xrpusd_perp",
+    )
 
 if __name__ == "__main__":
     subscribeUM()
