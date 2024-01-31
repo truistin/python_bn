@@ -138,13 +138,13 @@ def time_calc():
                 it.num = 0
                 it.sum_price = 0
             except ZeroDivisionError:
-                logging.info("exception symbol: {}".format(it.symbol))
+                logger.info("exception symbol: {}".format(it.symbol))
         for key, value in dic.items():
             if 'PERP' in key.op_symbol:
                 thresh = (key.avg_mid_price - value.avg_mid_price) / value.avg_mid_price
                 if thresh >= 0.0006:
                     utc_now = datetime.utcnow() 
-                    logging.info("valid symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}, time : {}"\
+                    logger.info("valid symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}, time : {}"\
                         .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh, utc_now))  
 
 def subscribeUM():
