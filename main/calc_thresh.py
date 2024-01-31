@@ -11,7 +11,17 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from decimal import Decimal
 
 
-config_logging(logging, logging.DEBUG)
+# 创建一个logger  
+logger = logging.getLogger('my_logger')  
+logger.setLevel(logging.INFO)  
+  
+# 创建一个文件处理器，并设置日志级别和格式化器  
+file_handler = logging.FileHandler('example.log')  
+file_handler.setLevel(logging.INFO)  
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')  
+file_handler.setFormatter(formatter)  
+
+logger.addHandler(file_handler)  
 
 class symbolInfo:
     def __init__(self, symbol, op_symbol):
