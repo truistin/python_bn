@@ -8,6 +8,7 @@ import json
 import schedule  
 import time  
 from apscheduler.schedulers.background import BackgroundScheduler  
+from decimal import Decimal
 
 
 config_logging(logging, logging.DEBUG)
@@ -19,11 +20,11 @@ class symbolInfo:
         self.sum_price = 0
         self.mid_price = 0
         self.time_stamp = 0 
-        self.thresh = 0
+        self.avg_mid_price = 0
         self.num = 0
 
     def calc(self, ask, bid, stamp):
-        self.mid_price = (float(ask) + float(bid)) / float(2)
+        self.mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
         self.sum_price = self.sum_price + self.mid_price
         self.num = self.num + 1
         self.time_stamp = int(stamp)
@@ -56,16 +57,17 @@ def message_handler(_, message):
 
 def time_calc():
     for it in lst:
-        it.thresh = it.sum_price / it.num
-        logging.info("time calc symbol : {}, thresh : {}, timestamp : {}, mid_price : {}, sum_price : {}, num : {} "\
-                    .format(it.symbol, it.thresh, it.time_stamp, it.mid_price, it.sum_price, it.num))
+        it.avg_mid_price = it.sum_price / it.num
+        logging.info("time calc symbol : {}, avg_mid_price : {}, timestamp : {}, mid_price : {}, sum_price : {}, num : {} "\
+                    .format(it.symbol, it.avg_mid_price, it.time_stamp, it.mid_price, it.sum_price, it.num))
         it.num = 0
         it.sum_price = 0
     for key, value in dic.items():
         if 'PERP' in key.op_symbol:
-            thresh = (key.thresh - value.thresh) / value.thresh
-            logging.info("time calc key symbol : {}, value symbol : {}, key thresh : {}, value thresh : {}, thresh : {}"\
-                .format(key.symbol, value.symbol , key.thresh, value.thresh, thresh))
+            thresh = (key.avg_mid_price - value.avg_mid_price) / value.avg_mid_price
+            if thresh >= 0.0006:
+                logging.info("time calc key symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}"\
+                    .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh))
 
         
 
