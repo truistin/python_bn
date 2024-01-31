@@ -146,7 +146,7 @@ def time_calc():
                 logger.info("common symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}, time : {}"\
                     .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh, utc_now))  
 
-                if thresh >= 0.0006:
+                if thresh >= 0.0006 or thresh <= -0.0006:
                     logger.info("valid symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}, time : {}"\
                         .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh, utc_now))  
 
