@@ -133,9 +133,7 @@ def message_handler(_, message):
 def time_calc():
         for it in lst:
             try:
-                it.avg_mid_price = it.sum_price / it.num
-                logging.info("time calc key symbol : {}, op symbol : {},  avg_mid_price : {}, mid_price : {}, thresh : {}"\
-                    .format(it.symbol, it.op_symbol , it.avg_mid_price, it.mid_price, thresh))        
+                it.avg_mid_price = it.sum_price / it.num      
                 it.num = 0
                 it.sum_price = 0
             except ZeroDivisionError:
@@ -267,7 +265,7 @@ if __name__ == "__main__":
     subscribeCM()
 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(time_calc, 'interval', seconds=300)
+    scheduler.add_job(time_calc, 'interval', seconds=100)
     scheduler.start()
 
     while True:  
