@@ -48,7 +48,7 @@ class symbolInfo:
             self.last_time_stamp = stamp / 1000
             avg_price = self.sum_price / self.num
             new_data = np.array([avg_price])
-            data = np.concatenate((data, new_data))
+            self.data = np.concatenate((self.data, new_data))
             self.sum_price = 0
             self.num = 0
         else:
