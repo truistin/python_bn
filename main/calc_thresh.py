@@ -46,11 +46,15 @@ class symbolInfo:
 
         if self.last_time_stamp != stamp / 1000:
             self.last_time_stamp = stamp / 1000
-            avg_price = self.sum_price / self.num
-            new_data = np.array([avg_price])
-            self.data = np.concatenate((self.data, new_data))
-            self.sum_price = 0
-            self.num = 0
+            if self.sum_price == 0 or self.num == 0:
+                self.sum_price = self.sum_price + mid_price
+                self.num = self.num + 1
+            else :
+                avg_price = self.sum_price / self.num
+                new_data = np.array([avg_price])
+                self.data = np.concatenate((self.data, new_data))
+                self.sum_price = 0
+                self.num = 0
         else:
             self.sum_price = self.sum_price + mid_price
             self.num = self.num + 1
