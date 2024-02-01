@@ -9,12 +9,16 @@ import schedule
 import time  
 from apscheduler.schedulers.background import BackgroundScheduler  
 from decimal import Decimal
-from datetime import datetime  
+from datetime import datetime 
+import numpy as np 
 
 
 # 创建一个logger  
 logger = logging.getLogger('my_logger')  
-logger.setLevel(logging.INFO)  
+logger.setLevel(logging.INFO) 
+
+err_logger = logging.getLogger('my_err_logger')  
+err_logger.setLevel(logging.ERROR)  
   
 # 创建一个文件处理器，并设置日志级别和格式化器  
 file_handler = logging.FileHandler('thresh_calc.log')  
@@ -22,23 +26,33 @@ file_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')  
 file_handler.setFormatter(formatter)  
 
-logger.addHandler(file_handler)  
+logger.addHandler(file_handler)
+err_logger.addHandler(file_handler)  
 
 class symbolInfo:
     def __init__(self, symbol, op_symbol):
         self.symbol = symbol
         self.op_symbol = op_symbol
-        self.sum_price = 0
-        self.mid_price = 0
         self.time_stamp = 0 
-        self.avg_mid_price = 0
+        self.data = np.array([])
+
+        self.sum_price = 0
         self.num = 0
+        self.last_time_stamp = 0
 
     def calc(self, ask, bid, stamp):
-        self.mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
-        self.sum_price = self.sum_price + self.mid_price
-        self.num = self.num + 1
+        mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
         self.time_stamp = int(stamp)
+
+        if self.last_time_stamp != stamp / 1000:
+            self.last_time_stamp = stamp / 1000
+            avg_price = self.sum_price / num
+            new_data = np.array([avg_price])
+            data = np.concatenate((data, new_data))
+        else:
+            self.sum_price = self.sum_price + mid_price
+            num = num + 1
+
 
 """
 
@@ -132,23 +146,43 @@ def message_handler(_, message):
             it.calc(obj["a"], obj["b"], obj["T"])
 
 def time_calc():
-        for it in lst:
-            try:
-                it.avg_mid_price = it.sum_price / it.num      
-                it.num = 0
-                it.sum_price = 0
-            except ZeroDivisionError:
-                logger.info("exception symbol: {}".format(it.symbol))
         for key, value in dic.items():
             if 'PERP' in key.op_symbol:
                 utc_now = datetime.utcnow() 
-                thresh = (key.avg_mid_price - value.avg_mid_price) / value.avg_mid_price
-                logger.info("common symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}, time : {}"\
-                    .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh, utc_now))  
 
-                if thresh >= 0.0006 or thresh <= -0.0006:
-                    logger.info("valid symbol : {}, value symbol : {}, key avg_mid_price : {}, value avg_mid_price : {}, thresh : {}, time : {}"\
-                        .format(key.symbol, value.symbol , key.avg_mid_price, value.avg_mid_price, thresh, utc_now))  
+                key_mean = np.mean(key.data)
+                value_mean = np.mean(value.data)
+
+                # key_std = np.std(key.data)
+                # value_std = np.std(value.data)
+
+                mean_thresh = (key_mean - value_mean) / value_mean
+
+                size = np.size(key.data)
+                data = np.array([])
+                if np.size(key.data) != np.size(value.data):
+                    err_logger.error("key symbol : {}, value symbol : {}, key data size : {}, value data size : {}".\
+                        format(key.symbol, value.symbol, np.size(key.data), np.size(value.data)))
+                    size = min(np.size(key.data), np.size(value.data))
+
+                for i in size:
+                    new_data = np.array([key.data[i] - value.data[i]])
+                    data = np.concatenate((data, new_data))
+
+                std_thresh = np.std(data)
+
+                data = np.zeros(0)
+                key.data = np.zeros(0)
+                value.data = np.zeros(0)
+                    
+                logger.info("common symbol : {}, value symbol : {}, key mean : {}, value mean : {}, \
+                    mean thresh : {}, std thresh : {}, time : {}"\
+                    .format(key.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, utc_now))  
+
+                if mean_thresh >= 0.0008 or mean_thresh <= -0.0008:
+                    logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, \
+                        mean thresh : {}, std thresh : {}, time : {}"\
+                        .format(key.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, utc_now))  
 
 def subscribeUM():
     my_client = UMFuturesWebsocketClient(on_message=message_handler)
