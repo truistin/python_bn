@@ -29,35 +29,53 @@ file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 err_logger.addHandler(file_handler)  
 
+len_np = 600
 class symbolInfo:
     def __init__(self, symbol, op_symbol):
         self.symbol = symbol
         self.op_symbol = op_symbol
-        self.time_stamp = 0 
-        self.data = np.array([])
+        self.time_stamp = 0
+        self.avg_price = 0
+        self.data = np.zeros(len_np)
 
         self.sum_price = 0
         self.num = 0
         self.last_time_stamp = 0
+        self.last_index_np = 0
 
     def calc(self, ask, bid, stamp):
         mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
         self.time_stamp = int(stamp)
+        index_np = self.last_time_stamp % len_np
 
-        if self.last_time_stamp != stamp / 10000:
-            self.last_time_stamp = stamp / 10000
-            if self.sum_price == 0 or self.num == 0:
-                self.sum_price = self.sum_price + mid_price
-                self.num = self.num + 1
-            else :
-                avg_price = self.sum_price / self.num
-                new_data = np.array([avg_price])
-                self.data = np.concatenate((self.data, new_data))
-                self.sum_price = 0
-                self.num = 0
+        if self.last_time_stamp != stamp / 1000:
+            self.last_time_stamp = stamp / 1000
+
+            self.sum_price = 0
+            self.num = 0
+            
+            self.sum_price = self.sum_price + mid_price
+            self.num = self.num + 1
+
+            self.avg_price = self.sum_price / self.num
+
+            if index_np >= self.last_index_np:
+                self.data[self.last_index_np:index_np] = self.avg_price
+
+            if index_np < self.last_index_np:
+                self.data[self.last_index_np, len_np] = self.avg_price
+                self.data[0, index_np] = self.avg_price
+                self.last_index_np = index_np
+                time_calc()
+
         else:
             self.sum_price = self.sum_price + mid_price
             self.num = self.num + 1
+
+            self.avg_price = self.sum_price / self.num
+            
+            if index_np >= self.last_index_np:
+                self.data[self.last_index_np:index_np] = self.avg_price
 
 
 """
@@ -164,14 +182,10 @@ def time_calc():
 
                 mean_thresh = (key_mean - value_mean) / value_mean
 
-                size = np.size(key.data)
-                data = np.array([])
-                if np.size(key.data) != np.size(value.data):
-                    err_logger.error("key symbol : {}, value symbol : {}, key data size : {}, value data size : {}".
-                        format(key.symbol, value.symbol, np.size(key.data), np.size(value.data)))
-                    size = min(np.size(key.data), np.size(value.data))
+                data = np.zeros(0)
+                err_logger.error("key symbol : {}, value symbol : {}".format(key.symbol, value.symbol))
 
-                for i in range(size):
+                for i in range(len_np):
                     new_data = np.array([key.data[i] - value.data[i]])
                     data = np.concatenate((data, new_data))
 
@@ -308,7 +322,7 @@ if __name__ == "__main__":
     subscribeCM()
 
     scheduler = BackgroundScheduler()
-    scheduler.add_job(time_calc, 'interval', seconds=600)
+    scheduler.add_job(time_calc, 'interval', seconds=len_np)
     scheduler.start()
 
     while True:  
