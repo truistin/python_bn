@@ -171,7 +171,7 @@ def time_calc():
                         format(key.symbol, value.symbol, np.size(key.data), np.size(value.data)))
                     size = min(np.size(key.data), np.size(value.data))
 
-                for i in size:
+                for i in range(size):
                     new_data = np.array([key.data[i] - value.data[i]])
                     data = np.concatenate((data, new_data))
 
