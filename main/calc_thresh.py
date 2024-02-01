@@ -44,8 +44,8 @@ class symbolInfo:
         mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
         self.time_stamp = int(stamp)
 
-        if self.last_time_stamp != stamp / 1000:
-            self.last_time_stamp = stamp / 1000
+        if self.last_time_stamp != stamp / 10000:
+            self.last_time_stamp = stamp / 10000
             if self.sum_price == 0 or self.num == 0:
                 self.sum_price = self.sum_price + mid_price
                 self.num = self.num + 1
@@ -167,7 +167,7 @@ def time_calc():
                 size = np.size(key.data)
                 data = np.array([])
                 if np.size(key.data) != np.size(value.data):
-                    err_logger.error("key symbol : {}, value symbol : {}, key data size : {}, value data size : {}".\
+                    err_logger.error("key symbol : {}, value symbol : {}, key data size : {}, value data size : {}".
                         format(key.symbol, value.symbol, np.size(key.data), np.size(value.data)))
                     size = min(np.size(key.data), np.size(value.data))
 
@@ -181,13 +181,11 @@ def time_calc():
                 key.data = np.zeros(0)
                 value.data = np.zeros(0)
                     
-                logger.info("common symbol : {}, value symbol : {}, key mean : {}, value mean : {}, \
-                    mean thresh : {}, std thresh : {}, time : {}"\
+                logger.info("common symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, time : {}"
                     .format(key.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, utc_now))  
 
                 if mean_thresh >= 0.0008 or mean_thresh <= -0.0008:
-                    logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, \
-                        mean thresh : {}, std thresh : {}, time : {}"\
+                    logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, time : {}"
                         .format(key.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, utc_now))  
 
 def subscribeUM():
