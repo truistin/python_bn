@@ -66,6 +66,7 @@ class symbolInfo:
                 self.data[self.last_index_np, len_np] = self.avg_price
                 self.data[0, index_np] = self.avg_price
                 self.last_index_np = index_np
+                logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , index_np, self.last_index_np))
                 time_calc()
 
         else:
@@ -321,9 +322,9 @@ if __name__ == "__main__":
     subscribeUM()
     subscribeCM()
 
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(time_calc, 'interval', seconds=len_np)
-    scheduler.start()
+    # scheduler = BackgroundScheduler()
+    # scheduler.add_job(time_calc, 'interval', seconds=len_np)
+    # scheduler.start()
 
     while True:  
         time.sleep(1)
