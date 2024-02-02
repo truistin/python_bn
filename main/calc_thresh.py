@@ -47,7 +47,7 @@ class symbolInfo:
         mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
         self.time_stamp = int(stamp)
         index_np = self.last_time_stamp % len_np
-        print("50 index_np : {}, last_index_np : {}".format(index_np, self.last_index_np))
+        print("50 index_np : {}, last_index_np : {}, last_time_stamp : {}".format(index_np, self.last_index_np, self.last_time_stamp))
 
         if self.last_time_stamp != stamp / 1000:
             self.last_time_stamp = stamp / 1000
