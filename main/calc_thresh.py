@@ -62,7 +62,6 @@ class symbolInfo:
             if index_np >= self.last_index_np:
                 self.data[self.last_index_np:index_np] = self.avg_price
                 print("64 index_np : {}, last_index_np : {}".format(index_np, self.last_index_np))
-                exit()
 
             if index_np < self.last_index_np:
                 self.data[self.last_index_np, len_np] = self.avg_price
