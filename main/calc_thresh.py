@@ -209,7 +209,7 @@ def time_calc():
 
 def subscribeUM():
     my_client = UMFuturesWebsocketClient(on_message=message_handler)
-    my_client1 = UMFuturesWebsocketClient(on_message=message_handler)
+    # my_client1 = UMFuturesWebsocketClient(on_message=message_handler)
     my_client.book_ticker(symbol="ethusdt")
     my_client.book_ticker(symbol="btcusdt")
     my_client.book_ticker(symbol="solusdt")
@@ -220,13 +220,13 @@ def subscribeUM():
     my_client.book_ticker(symbol="bchusdt")
     my_client.book_ticker(symbol="linkusdt")
 
-    my_client1.book_ticker(symbol="opusdt")
-    my_client1.book_ticker(symbol="bnbusdt")
-    my_client1.book_ticker(symbol="dotusdt")
-    my_client1.book_ticker(symbol="maticusdt")
-    my_client1.book_ticker(symbol="dogeusdt")
-    my_client1.book_ticker(symbol="ltcusdt")
-    my_client1.book_ticker(symbol="xrpusdt")
+    # my_client1.book_ticker(symbol="opusdt")
+    # my_client1.book_ticker(symbol="bnbusdt")
+    # my_client1.book_ticker(symbol="dotusdt")
+    # my_client1.book_ticker(symbol="maticusdt")
+    # my_client1.book_ticker(symbol="dogeusdt")
+    # my_client1.book_ticker(symbol="ltcusdt")
+    # my_client1.book_ticker(symbol="xrpusdt")
 
 def subscribeCM():
     my_client = CMFuturesWebsocketClient(on_message=message_handler)
@@ -279,7 +279,7 @@ def subscribeCM():
         callback=message_handler,
         symbol="linkusd_perp",
     )
-
+"""
     my_client1.book_ticker(
         id=13,
         callback=message_handler,
@@ -320,7 +320,7 @@ def subscribeCM():
         id=13,
         callback=message_handler,
         symbol="xrpusd_perp",
-    )
+    )"""
 
 if __name__ == "__main__":
     subscribeUM()
