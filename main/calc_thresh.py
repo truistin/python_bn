@@ -50,7 +50,7 @@ class symbolInfo:
         if self.last_time_stamp != int(stamp / 1000):
             print("51 index_np : {}, last_index_np : {}, last_time_stamp : {}, stamp : {}".format(index_np, self.last_index_np, self.last_time_stamp, stamp))
 
-            self.last_time_stamp = int (stamp / 1000)
+            self.last_time_stamp = int(stamp / 1000)
 
             self.sum_price = 0
             self.num = 0
