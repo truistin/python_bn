@@ -48,7 +48,7 @@ class symbolInfo:
         index_np = self.last_time_stamp % len_np
 
         if self.last_time_stamp != int(stamp / 1000):
-            print("51 index_np : {}, last_index_np : {}, last_time_stamp : {}, stamp : {}".format(index_np, self.last_index_np, self.last_time_stamp, stamp))
+            print("51 symbol : {}, index_np : {}, last_index_np : {}, last_time_stamp : {}, stamp : {}".format(self.symbol, index_np, self.last_index_np, self.last_time_stamp, stamp))
 
             self.last_time_stamp = int(stamp / 1000)
 
@@ -62,12 +62,12 @@ class symbolInfo:
 
             if index_np >= self.last_index_np:
                 self.data[self.last_index_np:index_np] = self.avg_price
-                print("64 index_np : {}, last_index_np : {}".format(index_np, self.last_index_np))
+                print("64 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, index_np, self.last_index_np))
 
             if index_np < self.last_index_np:
                 self.data[self.last_index_np:len_np] = self.avg_price
                 self.data[0:index_np] = self.avg_price
-                print("69 index_np : {}, last_index_np : {}".format(index_np, self.last_index_np))
+                print("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, index_np, self.last_index_np))
                 logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , index_np, self.last_index_np))
                 time_calc()
             
@@ -123,11 +123,12 @@ matic_swap_sy = symbolInfo("MATICUSDT", "MATICUSD_PERP")
 doge_swao_sy = symbolInfo("DOGEUSDT", "DOGEUSD_PERP")
 ltc_swap_sy = symbolInfo("LTCUSDT", "LTCUSD_PERP")
 xrp_swap_sy = symbolInfo("XRPUSDT", "XRPUSD_PERP")
-
+"""
 dic = {eth_swap_sy:eth_perp_sy, btc_swap_sy:btc_perp_sy, sol_swap_sy:sol_perp_sy, ada_swap_sy:ada_perp_sy\
        , fil_swap_sy:fil_perp_sy, avax_swap_sy:avax_perp_sy, bch_swap_sy:bch_perp_sy, link_swap_sy:link_perp_sy\
         , op_swap_sy:op_perp_sy, bnb_swap_sy:bnb_perp_sy, dot_swap_sy:dot_perp_sy, matic_swap_sy:matic_perp_sy\
-        , doge_swao_sy:doge_perp_sy, ltc_swap_sy:ltc_perp_sy, xrp_swap_sy:xrp_perp_sy}
+        , doge_swao_sy:doge_perp_sy, ltc_swap_sy:ltc_perp_sy, xrp_swap_sy:xrp_perp_sy}"""
+dic = {eth_swap_sy:eth_perp_sy}
 
 lst = []
 lst.append(eth_perp_sy)
@@ -165,7 +166,7 @@ lst.append(eth_swap_sy)
 # lst.append(doge_swao_sy)
 # lst.append(ltc_swap_sy)
 # lst.append(xrp_swap_sy)
-print(lst)
+# print(lst)
 
 def message_handler(_, message):
     # print(message)
