@@ -47,8 +47,7 @@ class symbolInfo:
         mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
         self.time_stamp = int(stamp)
         index_np = self.last_time_stamp % len_np
-        print("index_np : {}, last_index_np : {}".format(index_np, self.last_time_stamp))
-        exit()
+        
         if self.last_time_stamp != stamp / 1000:
             self.last_time_stamp = stamp / 1000
 
@@ -66,9 +65,11 @@ class symbolInfo:
             if index_np < self.last_index_np:
                 self.data[self.last_index_np, len_np] = self.avg_price
                 self.data[0, index_np] = self.avg_price
-                self.last_index_np = index_np
                 logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , index_np, self.last_index_np))
                 time_calc()
+            
+            print("index_np : {}, last_index_np : {}".format(index_np, self.last_index_np))
+            self.last_index_np = index_np
 
         else:
             self.sum_price = self.sum_price + mid_price
