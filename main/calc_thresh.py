@@ -165,7 +165,7 @@ lst.append(eth_swap_sy)
 # lst.append(doge_swao_sy)
 # lst.append(ltc_swap_sy)
 # lst.append(xrp_swap_sy)
-
+print(lst)
 
 def message_handler(_, message):
     # print(message)
@@ -230,7 +230,7 @@ def subscribeUM():
 
 def subscribeCM():
     my_client = CMFuturesWebsocketClient(on_message=message_handler)
-    my_client1 = CMFuturesWebsocketClient(on_message=message_handler)
+    # my_client1 = CMFuturesWebsocketClient(on_message=message_handler)
 
     my_client.book_ticker(
         id=13,
