@@ -34,7 +34,6 @@ class symbolInfo:
     def __init__(self, symbol, op_symbol):
         self.symbol = symbol
         self.op_symbol = op_symbol
-        self.time_stamp = 0
         self.avg_price = 0
         self.data = np.zeros(len_np)
 
@@ -43,10 +42,9 @@ class symbolInfo:
         self.last_time_stamp = 0
         self.last_index_np = 0
 
-    def calc(self, ask, bid, stamp):
-        stamp = int(stamp)
+    def calc(self, ask, bid, stamp1):
+        stamp = int(stamp1)
         mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
-        self.time_stamp = int(stamp)
         index_np = self.last_time_stamp % len_np
         # print("50 index_np : {}, last_index_np : {}, last_time_stamp : {}".format(index_np, self.last_index_np, self.last_time_stamp))
 
