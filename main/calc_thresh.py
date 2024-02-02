@@ -131,40 +131,40 @@ dic = {eth_swap_sy:eth_perp_sy, btc_swap_sy:btc_perp_sy, sol_swap_sy:sol_perp_sy
 
 lst = []
 lst.append(eth_perp_sy)
-lst.append(btc_perp_sy)
-lst.append(sol_perp_sy)
+# lst.append(btc_perp_sy)
+# lst.append(sol_perp_sy)
 
-lst.append(ada_perp_sy)
-lst.append(fil_perp_sy)
-lst.append(avax_perp_sy)
-lst.append(bch_perp_sy)
-lst.append(link_perp_sy)
+# lst.append(ada_perp_sy)
+# lst.append(fil_perp_sy)
+# lst.append(avax_perp_sy)
+# lst.append(bch_perp_sy)
+# lst.append(link_perp_sy)
 
-lst.append(op_perp_sy)
-lst.append(bnb_perp_sy)
-lst.append(dot_perp_sy)
-lst.append(matic_perp_sy)
-lst.append(doge_perp_sy)
-lst.append(ltc_perp_sy)
-lst.append(xrp_perp_sy)
+# lst.append(op_perp_sy)
+# lst.append(bnb_perp_sy)
+# lst.append(dot_perp_sy)
+# lst.append(matic_perp_sy)
+# lst.append(doge_perp_sy)
+# lst.append(ltc_perp_sy)
+# lst.append(xrp_perp_sy)
 
 lst.append(eth_swap_sy)
-lst.append(btc_swap_sy)
-lst.append(sol_swap_sy)
+# lst.append(btc_swap_sy)
+# lst.append(sol_swap_sy)
 
-lst.append(ada_swap_sy)
-lst.append(fil_swap_sy)
-lst.append(avax_swap_sy)
-lst.append(bch_swap_sy)
-lst.append(link_swap_sy)
+# lst.append(ada_swap_sy)
+# lst.append(fil_swap_sy)
+# lst.append(avax_swap_sy)
+# lst.append(bch_swap_sy)
+# lst.append(link_swap_sy)
 
-lst.append(op_swap_sy)
-lst.append(bnb_swap_sy)
-lst.append(dot_swap_sy)
-lst.append(matic_swap_sy)
-lst.append(doge_swao_sy)
-lst.append(ltc_swap_sy)
-lst.append(xrp_swap_sy)
+# lst.append(op_swap_sy)
+# lst.append(bnb_swap_sy)
+# lst.append(dot_swap_sy)
+# lst.append(matic_swap_sy)
+# lst.append(doge_swao_sy)
+# lst.append(ltc_swap_sy)
+# lst.append(xrp_swap_sy)
 
 
 def message_handler(_, message):
@@ -235,13 +235,13 @@ def subscribeCM():
     my_client.book_ticker(
         id=13,
         callback=message_handler,
-        symbol="btcusd_perp",
+        symbol="ethusd_perp",
     )
-
+"""
     my_client.book_ticker(
         id=13,
         callback=message_handler,
-        symbol="ethusd_perp",
+        symbol="btcusd_perp",
     )
 
     my_client.book_ticker(
@@ -279,7 +279,7 @@ def subscribeCM():
         callback=message_handler,
         symbol="linkusd_perp",
     )
-"""
+
     my_client1.book_ticker(
         id=13,
         callback=message_handler,
