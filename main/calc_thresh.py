@@ -29,7 +29,7 @@ file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 err_logger.addHandler(file_handler)  
 
-len_np = 60
+len_np = 600
 class symbolInfo:
     def __init__(self, symbol, op_symbol):
         self.symbol = symbol
