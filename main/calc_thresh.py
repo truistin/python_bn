@@ -61,13 +61,17 @@ class symbolInfo:
 
             self.avg_price = self.sum_price / self.num
 
-            if self.index_np >= self.last_index_np:
-                self.data[self.last_index_np:self.index_np] = self.avg_price
+            if self.index_np == self.last_index_np:
+                self.data[self.last_index_np] = self.avg_price
+
+            if self.index_np > self.last_index_np:
+                self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
                 print("64 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
 
             if self.index_np < self.last_index_np:
-                self.data[self.last_index_np:len_np] = self.avg_price
-                self.data[0:self.index_np] = self.avg_price
+                self.data[(self.last_index_np+1):len_np] = self.avg_price
+                self.data[0:(self.index_np+1)] = self.avg_price
+
                 print("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
                 logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
                 self.time_calc()
@@ -80,8 +84,11 @@ class symbolInfo:
 
             self.avg_price = self.sum_price / self.num
             
-            if self.index_np >= self.last_index_np:
-                self.data[self.last_index_np:self.index_np] = self.avg_price
+            if self.index_np == self.last_index_np:
+                self.data[self.last_index_np] = self.avg_price
+                
+            # if self.index_np > self.last_index_np:
+            #     self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
 
 
     def time_calc(self):
@@ -92,8 +99,8 @@ class symbolInfo:
 
             key_mean = np.mean(self.data)
             value_mean = np.mean(value.data)
-
-            value.data[value.data == 0] = value.data[(value.index_np - 1) % len_np]
+            # value.data[(len_np + value.index_np - 1) % len_np]
+            value.data[value.data == 0] = value.data[value.index_np]
 
             mean_thresh = (key_mean - value_mean) / value_mean
 
