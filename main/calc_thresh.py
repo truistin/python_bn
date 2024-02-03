@@ -41,14 +41,15 @@ class symbolInfo:
         self.num = 0
         self.last_time_stamp = 0
         self.last_index_np = 0
+        self.index_np = 0
 
-    def calc(self, ask, bid, stamp1):
+    def calc(self, ask, bid, stamp1, op_symbol):
         stamp = int(stamp1)
         mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
-        index_np = self.last_time_stamp % len_np
+        self.index_np = self.last_time_stamp % len_np
 
         if self.last_time_stamp != int(stamp / 1000):
-            print("51 symbol : {}, index_np : {}, last_index_np : {}, last_time_stamp : {}, stamp : {}".format(self.symbol, index_np, self.last_index_np, self.last_time_stamp, stamp))
+            print("51 symbol : {}, index_np : {}, last_index_np : {}, last_time_stamp : {}, stamp : {}".format(self.symbol, self.index_np, self.last_index_np, self.last_time_stamp, stamp))
 
             self.last_time_stamp = int(stamp / 1000)
 
@@ -60,18 +61,18 @@ class symbolInfo:
 
             self.avg_price = self.sum_price / self.num
 
-            if index_np >= self.last_index_np:
-                self.data[self.last_index_np:index_np] = self.avg_price
-                print("64 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, index_np, self.last_index_np))
+            if self.index_np >= self.last_index_np:
+                self.data[self.last_index_np:self.index_np] = self.avg_price
+                print("64 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
 
-            if index_np < self.last_index_np:
+            if self.index_np < self.last_index_np:
                 self.data[self.last_index_np:len_np] = self.avg_price
-                self.data[0:index_np] = self.avg_price
-                print("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, index_np, self.last_index_np))
-                logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , index_np, self.last_index_np))
-                time_calc()
+                self.data[0:self.index_np] = self.avg_price
+                print("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
+                logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
+                time_calc(op_symbol)
             
-            self.last_index_np = index_np
+            self.last_index_np = self.index_np
 
         else:
             self.sum_price = self.sum_price + mid_price
@@ -79,8 +80,8 @@ class symbolInfo:
 
             self.avg_price = self.sum_price / self.num
             
-            if index_np >= self.last_index_np:
-                self.data[self.last_index_np:index_np] = self.avg_price
+            if self.index_np >= self.last_index_np:
+                self.data[self.last_index_np:self.index_np] = self.avg_price
 
 
 """
@@ -173,15 +174,18 @@ def message_handler(_, message):
     obj = json.loads(message)
     for it in lst:
         if it.symbol == obj["s"]:
-            it.calc(obj["a"], obj["b"], obj["T"])
+            iter = dic[it]
+            it.calc(obj["a"], obj["b"], obj["T"], iter)
 
-def time_calc():
+def time_calc(op_symbol):
         for key, value in dic.items():
             if 'PERP' in key.op_symbol:
                 utc_now = datetime.utcnow() 
 
                 key_mean = np.mean(key.data)
                 value_mean = np.mean(value.data)
+
+                op_symbol.data[op_symbol.data == 0] = op_symbol.data[op_symbol.index_np - 1]
 
                 # key_std = np.std(key.data)
                 # value_std = np.std(value.data)
@@ -197,9 +201,8 @@ def time_calc():
 
                 std_thresh = np.std(data)
 
-                data = np.zeros(0)
-                key.data = np.zeros(0)
-                value.data = np.zeros(0)
+                key.data.fill(0)
+                value.data.fill(0)
                     
                 logger.info("common symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, time : {}"
                     .format(key.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, utc_now))  
