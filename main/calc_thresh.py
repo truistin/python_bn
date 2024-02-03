@@ -101,7 +101,7 @@ class symbolInfo:
         value.data[value.data == 0] = value.data[value.index_np]
 
         mean_thresh = 0
-        if "usdt" in self.symbol:
+        if "USDT" in self.symbol:
             mean_thresh = (key_mean - value_mean) / value_mean
         else:
             mean_thresh = (value_mean - key_mean) / key_mean
@@ -109,7 +109,7 @@ class symbolInfo:
         data = np.zeros(0)
         err_logger.error("key symbol : {}, value symbol : {}".format(self.symbol, value.symbol))
 
-        if "usdt" in self.symbol:
+        if "USDT" in self.symbol:
             for i in range(len_np):
                 new_data = np.array([self.data[i] - value.data[i]])
                 data = np.concatenate((data, new_data))
