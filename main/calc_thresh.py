@@ -85,6 +85,8 @@ class symbolInfo:
                 self.time_calc()
             
             self.last_index_np = self.index_np
+            print("last_index_np : {}, index_np : {}".format(self.last_index_np, self.index_np))
+            
 
         else:
             self.sum_price = self.sum_price + mid_price
