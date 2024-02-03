@@ -29,7 +29,7 @@ file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 err_logger.addHandler(file_handler)  
 
-len_np = 600
+len_np = 60
 class symbolInfo:
     def __init__(self, symbol, op_symbol):
         self.symbol = symbol
@@ -129,91 +129,6 @@ class symbolInfo:
         
         self.data.fill(0)
         value.data.fill(0)
-
-"""
-
-etc,ada,fil,avax,bch,link,op,sol,eth,bnb,dot,matic,doge,ltc,xrp,btc
-"""
-
-eth_perp_sy = symbolInfo("ETHUSD_PERP", "ETHUSDT")
-btc_perp_sy = symbolInfo("BTCUSD_PERP", "BTCUSDT")
-sol_perp_sy = symbolInfo("SOLUSD_PERP", "SOLUSDT")
-
-ada_perp_sy = symbolInfo("ADAUSD_PERP", "ADAUSDT")
-fil_perp_sy = symbolInfo("FILUSD_PERP", "FILUSDT")
-avax_perp_sy = symbolInfo("AVAXUSD_PERP", "AVAXUSDT")
-bch_perp_sy = symbolInfo("BCHUSD_PERP", "BCHUSDT")
-link_perp_sy = symbolInfo("LINKUSD_PERP", "LINKUSDT")
-
-op_perp_sy = symbolInfo("OPUSD_PERP", "OPUSDT")
-bnb_perp_sy = symbolInfo("BNBUSD_PERP", "BNBUSDT")
-dot_perp_sy = symbolInfo("DOTUSD_PERP", "DOTUSDT")
-matic_perp_sy = symbolInfo("MATICUSD_PERP", "MATICUSDT")
-doge_perp_sy = symbolInfo("DOGEUSD_PERP", "DOGEUSDT")
-ltc_perp_sy = symbolInfo("LTCUSD_PERP", "LTCUSDT")
-xrp_perp_sy = symbolInfo("XRPUSD_PERP", "XRPUSDT")
-
-eth_swap_sy = symbolInfo("ETHUSDT", "ETHUSD_PERP")
-btc_swap_sy = symbolInfo("BTCUSDT", "BTCUSD_PERP")
-sol_swap_sy = symbolInfo("SOLUSDT", "SOLUSD_PERP")
-
-ada_swap_sy = symbolInfo("ADAUSDT", "ADAUSD_PERP")
-fil_swap_sy = symbolInfo("FILUSDT", "FILUSD_PERP")
-avax_swap_sy = symbolInfo("AVAXUSDT", "AVAXUSD_PERP")
-bch_swap_sy = symbolInfo("BCHUSDT", "BCHUSD_PERP")
-link_swap_sy = symbolInfo("LINKUSDT", "LINKUSD_PERP")
-
-op_swap_sy = symbolInfo("OPUSDT", "OPUSD_PERP")
-bnb_swap_sy = symbolInfo("BNBUSDT", "BNBUSD_PERP")
-dot_swap_sy = symbolInfo("DOTUSDT", "DOTUSD_PERP")
-matic_swap_sy = symbolInfo("MATICUSDT", "MATICUSD_PERP")
-doge_swao_sy = symbolInfo("DOGEUSDT", "DOGEUSD_PERP")
-ltc_swap_sy = symbolInfo("LTCUSDT", "LTCUSD_PERP")
-xrp_swap_sy = symbolInfo("XRPUSDT", "XRPUSD_PERP")
-"""
-dic = {eth_swap_sy:eth_perp_sy, btc_swap_sy:btc_perp_sy, sol_swap_sy:sol_perp_sy, ada_swap_sy:ada_perp_sy\
-       , fil_swap_sy:fil_perp_sy, avax_swap_sy:avax_perp_sy, bch_swap_sy:bch_perp_sy, link_swap_sy:link_perp_sy\
-        , op_swap_sy:op_perp_sy, bnb_swap_sy:bnb_perp_sy, dot_swap_sy:dot_perp_sy, matic_swap_sy:matic_perp_sy\
-        , doge_swao_sy:doge_perp_sy, ltc_swap_sy:ltc_perp_sy, xrp_swap_sy:xrp_perp_sy}"""
-dic = {eth_swap_sy:eth_perp_sy}
-
-lst = []
-lst.append(eth_perp_sy)
-# lst.append(btc_perp_sy)
-# lst.append(sol_perp_sy)
-
-# lst.append(ada_perp_sy)
-# lst.append(fil_perp_sy)
-# lst.append(avax_perp_sy)
-# lst.append(bch_perp_sy)
-# lst.append(link_perp_sy)
-
-# lst.append(op_perp_sy)
-# lst.append(bnb_perp_sy)
-# lst.append(dot_perp_sy)
-# lst.append(matic_perp_sy)
-# lst.append(doge_perp_sy)
-# lst.append(ltc_perp_sy)
-# lst.append(xrp_perp_sy)
-
-lst.append(eth_swap_sy)
-# lst.append(btc_swap_sy)
-# lst.append(sol_swap_sy)
-
-# lst.append(ada_swap_sy)
-# lst.append(fil_swap_sy)
-# lst.append(avax_swap_sy)
-# lst.append(bch_swap_sy)
-# lst.append(link_swap_sy)
-
-# lst.append(op_swap_sy)
-# lst.append(bnb_swap_sy)
-# lst.append(dot_swap_sy)
-# lst.append(matic_swap_sy)
-# lst.append(doge_swao_sy)
-# lst.append(ltc_swap_sy)
-# lst.append(xrp_swap_sy)
-# print(lst)
 
 def message_handler(_, message):
     # print(message)
@@ -338,6 +253,91 @@ def subscribeCM():
     )"""
 
 if __name__ == "__main__":
+    """
+
+    etc,ada,fil,avax,bch,link,op,sol,eth,bnb,dot,matic,doge,ltc,xrp,btc
+    """
+
+    eth_perp_sy = symbolInfo("ETHUSD_PERP", "ETHUSDT")
+    btc_perp_sy = symbolInfo("BTCUSD_PERP", "BTCUSDT")
+    sol_perp_sy = symbolInfo("SOLUSD_PERP", "SOLUSDT")
+
+    ada_perp_sy = symbolInfo("ADAUSD_PERP", "ADAUSDT")
+    fil_perp_sy = symbolInfo("FILUSD_PERP", "FILUSDT")
+    avax_perp_sy = symbolInfo("AVAXUSD_PERP", "AVAXUSDT")
+    bch_perp_sy = symbolInfo("BCHUSD_PERP", "BCHUSDT")
+    link_perp_sy = symbolInfo("LINKUSD_PERP", "LINKUSDT")
+
+    op_perp_sy = symbolInfo("OPUSD_PERP", "OPUSDT")
+    bnb_perp_sy = symbolInfo("BNBUSD_PERP", "BNBUSDT")
+    dot_perp_sy = symbolInfo("DOTUSD_PERP", "DOTUSDT")
+    matic_perp_sy = symbolInfo("MATICUSD_PERP", "MATICUSDT")
+    doge_perp_sy = symbolInfo("DOGEUSD_PERP", "DOGEUSDT")
+    ltc_perp_sy = symbolInfo("LTCUSD_PERP", "LTCUSDT")
+    xrp_perp_sy = symbolInfo("XRPUSD_PERP", "XRPUSDT")
+
+    eth_swap_sy = symbolInfo("ETHUSDT", "ETHUSD_PERP")
+    btc_swap_sy = symbolInfo("BTCUSDT", "BTCUSD_PERP")
+    sol_swap_sy = symbolInfo("SOLUSDT", "SOLUSD_PERP")
+
+    ada_swap_sy = symbolInfo("ADAUSDT", "ADAUSD_PERP")
+    fil_swap_sy = symbolInfo("FILUSDT", "FILUSD_PERP")
+    avax_swap_sy = symbolInfo("AVAXUSDT", "AVAXUSD_PERP")
+    bch_swap_sy = symbolInfo("BCHUSDT", "BCHUSD_PERP")
+    link_swap_sy = symbolInfo("LINKUSDT", "LINKUSD_PERP")
+
+    op_swap_sy = symbolInfo("OPUSDT", "OPUSD_PERP")
+    bnb_swap_sy = symbolInfo("BNBUSDT", "BNBUSD_PERP")
+    dot_swap_sy = symbolInfo("DOTUSDT", "DOTUSD_PERP")
+    matic_swap_sy = symbolInfo("MATICUSDT", "MATICUSD_PERP")
+    doge_swao_sy = symbolInfo("DOGEUSDT", "DOGEUSD_PERP")
+    ltc_swap_sy = symbolInfo("LTCUSDT", "LTCUSD_PERP")
+    xrp_swap_sy = symbolInfo("XRPUSDT", "XRPUSD_PERP")
+    """
+    dic = {eth_swap_sy:eth_perp_sy, btc_swap_sy:btc_perp_sy, sol_swap_sy:sol_perp_sy, ada_swap_sy:ada_perp_sy\
+        , fil_swap_sy:fil_perp_sy, avax_swap_sy:avax_perp_sy, bch_swap_sy:bch_perp_sy, link_swap_sy:link_perp_sy\
+            , op_swap_sy:op_perp_sy, bnb_swap_sy:bnb_perp_sy, dot_swap_sy:dot_perp_sy, matic_swap_sy:matic_perp_sy\
+            , doge_swao_sy:doge_perp_sy, ltc_swap_sy:ltc_perp_sy, xrp_swap_sy:xrp_perp_sy}"""
+    dic = {eth_swap_sy:eth_perp_sy}
+
+    lst = []
+    lst.append(eth_perp_sy)
+    # lst.append(btc_perp_sy)
+    # lst.append(sol_perp_sy)
+
+    # lst.append(ada_perp_sy)
+    # lst.append(fil_perp_sy)
+    # lst.append(avax_perp_sy)
+    # lst.append(bch_perp_sy)
+    # lst.append(link_perp_sy)
+
+    # lst.append(op_perp_sy)
+    # lst.append(bnb_perp_sy)
+    # lst.append(dot_perp_sy)
+    # lst.append(matic_perp_sy)
+    # lst.append(doge_perp_sy)
+    # lst.append(ltc_perp_sy)
+    # lst.append(xrp_perp_sy)
+
+    lst.append(eth_swap_sy)
+    # lst.append(btc_swap_sy)
+    # lst.append(sol_swap_sy)
+
+    # lst.append(ada_swap_sy)
+    # lst.append(fil_swap_sy)
+    # lst.append(avax_swap_sy)
+    # lst.append(bch_swap_sy)
+    # lst.append(link_swap_sy)
+
+    # lst.append(op_swap_sy)
+    # lst.append(bnb_swap_sy)
+    # lst.append(dot_swap_sy)
+    # lst.append(matic_swap_sy)
+    # lst.append(doge_swao_sy)
+    # lst.append(ltc_swap_sy)
+    # lst.append(xrp_swap_sy)
+    # print(lst)
+
     subscribeUM()
     subscribeCM()
 
