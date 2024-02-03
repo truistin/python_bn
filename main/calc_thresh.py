@@ -70,7 +70,7 @@ class symbolInfo:
                 self.data[0:self.index_np] = self.avg_price
                 print("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
                 logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
-                time_calc(self)
+                self.time_calc()
             
             self.last_index_np = self.index_np
 
@@ -83,6 +83,38 @@ class symbolInfo:
             if self.index_np >= self.last_index_np:
                 self.data[self.last_index_np:self.index_np] = self.avg_price
 
+
+    def time_calc(self):
+            if "usdt" not in self.symbol:
+                return
+            value = dic[self]
+            utc_now = datetime.utcnow() 
+
+            key_mean = np.mean(self.data)
+            value_mean = np.mean(value.data)
+
+            value.data[value.data == 0] = value.data[(value.index_np - 1) % len_np]
+
+            mean_thresh = (key_mean - value_mean) / value_mean
+
+            data = np.zeros(0)
+            err_logger.error("key symbol : {}, value symbol : {}".format(self.symbol, value.symbol))
+
+            for i in range(len_np):
+                new_data = np.array([self.data[i] - value.data[i]])
+                data = np.concatenate((data, new_data))
+
+            std_thresh = np.std(data)
+
+            self.data.fill(0)
+            value.data.fill(0)
+                
+            logger.info("common symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value lastindex data : {}, time : {}"
+                .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[(value.index_np - 1) % len_np], utc_now))  
+
+            if mean_thresh >= 0.0008 or mean_thresh <= -0.0008:
+                logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value lastindex data : {}, time : {}"
+                    .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[(value.index_np - 1) % len_np], utc_now))  
 
 """
 
@@ -175,41 +207,6 @@ def message_handler(_, message):
     for it in lst:
         if it.symbol == obj["s"]:
             it.calc(obj["a"], obj["b"], obj["T"])
-
-def time_calc(symbol_info):
-        for key, value in dic.items():
-            if 'PERP' in key.op_symbol:
-                utc_now = datetime.utcnow() 
-
-                key_mean = np.mean(key.data)
-                value_mean = np.mean(value.data)
-
-                op_symbol_info = dic[symbol_info]
-                op_symbol_info.data[op_symbol_info.data == 0] = op_symbol_info.data[(op_symbol_info.index_np - 1) % len_np]
-
-                # key_std = np.std(key.data)
-                # value_std = np.std(value.data)
-
-                mean_thresh = (key_mean - value_mean) / value_mean
-
-                data = np.zeros(0)
-                err_logger.error("key symbol : {}, value symbol : {}".format(key.symbol, value.symbol))
-
-                for i in range(len_np):
-                    new_data = np.array([key.data[i] - value.data[i]])
-                    data = np.concatenate((data, new_data))
-
-                std_thresh = np.std(data)
-
-                key.data.fill(0)
-                value.data.fill(0)
-                    
-                logger.info("common symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, op_symbol_info lastindex data : {}, time : {}"
-                    .format(key.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, op_symbol_info.data[(op_symbol_info.index_np - 1) % len_np], utc_now))  
-
-                if mean_thresh >= 0.0008 or mean_thresh <= -0.0008:
-                    logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, op_symbol_info lastindex data : {}, time : {}"
-                        .format(key.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, op_symbol_info.data[(op_symbol_info.index_np - 1) % len_np], utc_now))  
 
 def subscribeUM():
     my_client = UMFuturesWebsocketClient(on_message=message_handler)
