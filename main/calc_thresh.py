@@ -82,7 +82,8 @@ class symbolInfo:
 
                 print("75 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
                 logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
-                self.time_calc()
+                if "USDT" in self.symbol:
+                    self.time_calc()
             
             self.last_index_np = self.index_np
             print("last_index_np : {}, index_np : {}".format(self.last_index_np, self.index_np))
@@ -111,22 +112,16 @@ class symbolInfo:
         value.data[value.data == 0] = value.data[value.index_np]
 
         mean_thresh = 0
-        if "USDT" in self.symbol:
-            mean_thresh = (key_mean - value_mean) / value_mean
-        else:
-            mean_thresh = (value_mean - key_mean) / key_mean
+
+        mean_thresh = (key_mean - value_mean) / value_mean
 
         data = np.zeros(0)
         err_logger.error("key symbol : {}, value symbol : {}".format(self.symbol, value.symbol))
 
-        if "USDT" in self.symbol:
-            for i in range(len_np):
-                new_data = np.array([self.data[i] - value.data[i]])
-                data = np.concatenate((data, new_data))
-        else:
-            for i in range(len_np):
-                new_data = np.array([value.data[i] - self.data[i]])
-                data = np.concatenate((data, new_data))                
+        # if "USDT" in self.symbol:
+        for i in range(len_np):
+            new_data = np.array([self.data[i] - value.data[i]])
+            data = np.concatenate((data, new_data))             
 
         std_thresh = np.std(data)
 
