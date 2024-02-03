@@ -43,7 +43,7 @@ class symbolInfo:
         self.last_index_np = 0
         self.index_np = 0
 
-    def calc(self, ask, bid, stamp1, op_symbol):
+    def calc(self, ask, bid, stamp1, op_symbol_info):
         stamp = int(stamp1)
         mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
         self.index_np = self.last_time_stamp % len_np
@@ -70,7 +70,7 @@ class symbolInfo:
                 self.data[0:self.index_np] = self.avg_price
                 print("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
                 logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
-                time_calc(op_symbol)
+                time_calc(op_symbol_info)
             
             self.last_index_np = self.index_np
 
@@ -177,7 +177,7 @@ def message_handler(_, message):
             iter = dic[it]
             it.calc(obj["a"], obj["b"], obj["T"], iter)
 
-def time_calc(op_symbol):
+def time_calc(op_symbol_info):
         for key, value in dic.items():
             if 'PERP' in key.op_symbol:
                 utc_now = datetime.utcnow() 
@@ -185,7 +185,7 @@ def time_calc(op_symbol):
                 key_mean = np.mean(key.data)
                 value_mean = np.mean(value.data)
 
-                op_symbol.data[op_symbol.data == 0] = op_symbol.data[op_symbol.index_np - 1]
+                op_symbol_info.data[op_symbol_info.data == 0] = op_symbol_info.data[op_symbol_info.index_np - 1]
 
                 # key_std = np.std(key.data)
                 # value_std = np.std(value.data)
