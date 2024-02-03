@@ -43,7 +43,7 @@ class symbolInfo:
         self.last_index_np = 0
         self.index_np = 0
 
-    def calc(self, ask, bid, stamp1, op_symbol_info):
+    def calc(self, ask, bid, stamp1):
         stamp = int(stamp1)
         mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
         self.index_np = self.last_time_stamp % len_np
@@ -70,7 +70,7 @@ class symbolInfo:
                 self.data[0:self.index_np] = self.avg_price
                 print("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
                 logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
-                time_calc(op_symbol_info)
+                time_calc(self)
             
             self.last_index_np = self.index_np
 
@@ -174,10 +174,9 @@ def message_handler(_, message):
     obj = json.loads(message)
     for it in lst:
         if it.symbol == obj["s"]:
-            iter = dic[it]
-            it.calc(obj["a"], obj["b"], obj["T"], iter)
+            it.calc(obj["a"], obj["b"], obj["T"])
 
-def time_calc(op_symbol_info):
+def time_calc(symbol_info):
         for key, value in dic.items():
             if 'PERP' in key.op_symbol:
                 utc_now = datetime.utcnow() 
@@ -185,7 +184,8 @@ def time_calc(op_symbol_info):
                 key_mean = np.mean(key.data)
                 value_mean = np.mean(value.data)
 
-                op_symbol_info.data[op_symbol_info.data == 0] = op_symbol_info.data[op_symbol_info.index_np - 1]
+                op_symbol_info = dic[symbol_info]
+                op_symbol_info.data[op_symbol_info.data == 0] = op_symbol_info.data[(op_symbol_info.index_np - 1) % len_np]
 
                 # key_std = np.std(key.data)
                 # value_std = np.std(value.data)
@@ -204,12 +204,12 @@ def time_calc(op_symbol_info):
                 key.data.fill(0)
                 value.data.fill(0)
                     
-                logger.info("common symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, time : {}"
-                    .format(key.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, utc_now))  
+                logger.info("common symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, op_symbol_info lastindex data : {}, time : {}"
+                    .format(key.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, op_symbol_info.data[(op_symbol_info.index_np - 1) % len_np], utc_now))  
 
                 if mean_thresh >= 0.0008 or mean_thresh <= -0.0008:
-                    logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, time : {}"
-                        .format(key.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, utc_now))  
+                    logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, op_symbol_info lastindex data : {}, time : {}"
+                        .format(key.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, op_symbol_info.data[(op_symbol_info.index_np - 1) % len_np], utc_now))  
 
 def subscribeUM():
     my_client = UMFuturesWebsocketClient(on_message=message_handler)
