@@ -123,12 +123,12 @@ class symbolInfo:
         self.data.fill(0)
         value.data.fill(0)
             
-        logger.info("common symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value lastindex data : {}, time : {}"
-            .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[(value.index_np - 1) % len_np], utc_now))  
+        logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value index data : {}, value lastindex data : {}, data size : {}, time : {}"
+            .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[value.last_index_np], value.data[value.index_np], np.size(data), utc_now))  
 
         if mean_thresh >= 0.0008 or mean_thresh <= -0.0008:
-            logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value lastindex data : {}, time : {}"
-                .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[(value.index_np - 1) % len_np], utc_now))  
+            logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value index data : {}, value lastindex data : {}, data size : {}, time : {}"
+                .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[value.last_index_np], value.data[value.index_np], np.size(data), utc_now))  
 
 """
 
