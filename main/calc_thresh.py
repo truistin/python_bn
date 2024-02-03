@@ -100,7 +100,7 @@ class symbolInfo:
 
 
     def time_calc(self):
-        value = dic[self]
+        value = dic[self.symbol]
         utc_now = datetime.utcnow() 
 
         key_mean = np.mean(self.data)
@@ -306,7 +306,8 @@ if __name__ == "__main__":
         , fil_swap_sy:fil_perp_sy, avax_swap_sy:avax_perp_sy, bch_swap_sy:bch_perp_sy, link_swap_sy:link_perp_sy\
             , op_swap_sy:op_perp_sy, bnb_swap_sy:bnb_perp_sy, dot_swap_sy:dot_perp_sy, matic_swap_sy:matic_perp_sy\
             , doge_swao_sy:doge_perp_sy, ltc_swap_sy:ltc_perp_sy, xrp_swap_sy:xrp_perp_sy}"""
-    dic = {eth_swap_sy:eth_perp_sy}
+    
+    dic = {"ETHUSD_PERP":eth_swap_sy, "ETHUSDT":eth_perp_sy}
 
     lst = []
     lst.append(eth_perp_sy)
