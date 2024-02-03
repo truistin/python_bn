@@ -49,7 +49,7 @@ class symbolInfo:
         self.index_np = self.last_time_stamp % len_np
 
         if self.last_time_stamp != int(stamp / 1000):
-            print("51 symbol : {}, index_np : {}, last_index_np : {}, last_time_stamp : {}, stamp : {}".format(self.symbol, self.index_np, self.last_index_np, self.last_time_stamp, stamp))
+            print("52 symbol : {}, index_np : {}, last_index_np : {}, last_time_stamp : {}, stamp : {}".format(self.symbol, self.index_np, self.last_index_np, self.last_time_stamp, stamp))
 
             self.last_time_stamp = int(stamp / 1000)
 
@@ -66,13 +66,13 @@ class symbolInfo:
 
             if self.index_np > self.last_index_np:
                 self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
-                print("64 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
+                print("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
 
             if self.index_np < self.last_index_np:
                 self.data[(self.last_index_np+1):len_np] = self.avg_price
                 self.data[0:(self.index_np+1)] = self.avg_price
 
-                print("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
+                print("75 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
                 logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
                 self.time_calc()
             
@@ -92,36 +92,43 @@ class symbolInfo:
 
 
     def time_calc(self):
-            if "usdt" not in self.symbol:
-                return
-            value = dic[self]
-            utc_now = datetime.utcnow() 
+        value = dic[self]
+        utc_now = datetime.utcnow() 
 
-            key_mean = np.mean(self.data)
-            value_mean = np.mean(value.data)
-            # value.data[(len_np + value.index_np - 1) % len_np]
-            value.data[value.data == 0] = value.data[value.index_np]
+        key_mean = np.mean(self.data)
+        value_mean = np.mean(value.data)
+        # value.data[(len_np + value.index_np - 1) % len_np]
+        value.data[value.data == 0] = value.data[value.index_np]
 
+        mean_thresh = 0
+        if "usdt" in self.symbol:
             mean_thresh = (key_mean - value_mean) / value_mean
+        else:
+            mean_thresh = (value_mean - key_mean) / key_mean
 
-            data = np.zeros(0)
-            err_logger.error("key symbol : {}, value symbol : {}".format(self.symbol, value.symbol))
+        data = np.zeros(0)
+        err_logger.error("key symbol : {}, value symbol : {}".format(self.symbol, value.symbol))
 
+        if "usdt" in self.symbol:
             for i in range(len_np):
                 new_data = np.array([self.data[i] - value.data[i]])
                 data = np.concatenate((data, new_data))
+        else:
+            for i in range(len_np):
+                new_data = np.array([value.data[i] - self.data[i]])
+                data = np.concatenate((data, new_data))                
 
-            std_thresh = np.std(data)
+        std_thresh = np.std(data)
 
-            self.data.fill(0)
-            value.data.fill(0)
-                
-            logger.info("common symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value lastindex data : {}, time : {}"
+        self.data.fill(0)
+        value.data.fill(0)
+            
+        logger.info("common symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value lastindex data : {}, time : {}"
+            .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[(value.index_np - 1) % len_np], utc_now))  
+
+        if mean_thresh >= 0.0008 or mean_thresh <= -0.0008:
+            logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value lastindex data : {}, time : {}"
                 .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[(value.index_np - 1) % len_np], utc_now))  
-
-            if mean_thresh >= 0.0008 or mean_thresh <= -0.0008:
-                logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value lastindex data : {}, time : {}"
-                    .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[(value.index_np - 1) % len_np], utc_now))  
 
 """
 
