@@ -43,6 +43,14 @@ class symbolInfo:
         self.last_index_np = 0
         self.index_np = 0
 
+    def __hash__(self):  
+        return hash((self.symbol, self.op_symbol))  
+  
+    def __eq__(self, other):  
+        if isinstance(other, symbolInfo):  
+            return self.symbol == other.symbol and self.op_symbol == other.op_symbol  
+        return False  
+
     def calc(self, ask, bid, stamp1):
         stamp = int(stamp1)
         mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
