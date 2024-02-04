@@ -11,8 +11,9 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from decimal import Decimal
 from datetime import datetime 
 import numpy as np 
+import threading  
 
-
+lock = threading.Lock()  
 # 创建一个logger  
 logger = logging.getLogger('my_logger')  
 logger.setLevel(logging.INFO) 
@@ -30,6 +31,8 @@ logger.addHandler(file_handler)
 err_logger.addHandler(file_handler)  
 
 len_np = 600
+
+dict = {"BTC":1,"ETC":1,"ADA":1,"FIL":1,"AVAX":1,"BCH":1,"LINK":1,"OP":1,"SOL":1,"ETH":1,"BNB":1,"DOT":1,"MATIC":1,"DOGE":1,"LTC":1,"XRP":1}
 class symbolInfo:
     def __init__(self, symbol, op_symbol):
         self.symbol = symbol
@@ -82,7 +85,10 @@ class symbolInfo:
 
                 print("75 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
                 logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
-                if "USDT" in self.symbol:
+                with lock:
+                    if dict[self.symbol] == 0:
+                        dict[self.symbol] = 1
+                        return
                     self.time_calc()
             
             self.last_index_np = self.index_np
@@ -112,16 +118,22 @@ class symbolInfo:
         value.data[value.data == 0] = value.data[value.index_np]
 
         mean_thresh = 0
-
-        mean_thresh = (key_mean - value_mean) / value_mean
+        if "USDT" in self.symbol:
+            mean_thresh = (key_mean - value_mean) / value_mean
+        else:
+            mean_thresh = (value_mean - key_mean) / key_mean
 
         data = np.zeros(0)
         err_logger.error("key symbol : {}, value symbol : {}".format(self.symbol, value.symbol))
-
-        # if "USDT" in self.symbol:
-        for i in range(len_np):
-            new_data = np.array([self.data[i] - value.data[i]])
-            data = np.concatenate((data, new_data))             
+        
+        if "USDT" in self.symbol:
+            for i in range(len_np):
+                new_data = np.array([self.data[i] - value.data[i]])
+                data = np.concatenate((data, new_data))
+        else:
+            for i in range(len_np):
+                new_data = np.array([value.data[i] - self.data[i]])
+                data = np.concatenate((data, new_data))  
 
         std_thresh = np.std(data)
 
@@ -134,6 +146,7 @@ class symbolInfo:
         
         self.data.fill(0)
         value.data.fill(0)
+        dict[self.symbol] = 0
 
 def message_handler(_, message):
     # print(message)
