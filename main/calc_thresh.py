@@ -90,7 +90,7 @@ class symbolInfo:
                     if dict[self.base_symbol] == 0:
                         dict[self.base_symbol] = 1
                         return
-                self.time_calc()
+                    self.time_calc()
             
             self.last_index_np = self.index_np
             print("last_index_np : {}, index_np : {}".format(self.last_index_np, self.index_np))
