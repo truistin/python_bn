@@ -88,6 +88,7 @@ class symbolInfo:
                 logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
                 with lock:
                     if dict[self.base_symbol] == 0:
+                        self.last_index_np = self.index_np
                         dict[self.base_symbol] = 1
                         return
                     self.time_calc()
