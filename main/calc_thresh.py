@@ -82,9 +82,9 @@ class symbolInfo:
 
             if self.index_np < self.last_index_np:
                 self.data[(self.last_index_np+1):len_np] = self.avg_price
-                self.data[0:(self.index_np+1)] = self.avg_price
+                # self.data[0:(self.index_np+1)] = self.avg_price
 
-                logger.info("75 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
+                logger.info("75 symbol : {}, index_np : {}, last_index_np : {}, avg_price : {}".format(self.symbol, self.index_np, self.last_index_np, self.avg_price, ))
                 logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
                 with lock:
                     if dict[self.base_symbol] == 0:
@@ -92,6 +92,9 @@ class symbolInfo:
                         dict[self.base_symbol] = 1
                         return
                     self.time_calc()
+                    self.last_index_np = 0
+                    self.index_np = 0
+                    return
             
             self.last_index_np = self.index_np            
 
