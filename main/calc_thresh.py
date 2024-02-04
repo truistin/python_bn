@@ -116,7 +116,7 @@ class symbolInfo:
         key_mean = np.mean(self.data)
         value_mean = np.mean(value.data)
         # value.data[(len_np + value.index_np - 1) % len_np]
-        # logger.info("self.symbol : {}, self.index : {}, self.lastindex : {}, value.index : {}, value.lastindex : {}, self.data : {}, value.data : {}".format(self.symbol, self.index_np, self.last_index_np, value.index_np, value.last_index_np, self.data, value.data))
+        logger.info("self.symbol : {}, self.index : {}, self.lastindex : {}, value.index : {}, value.lastindex : {}, self.data : {}, value.data : {}".format(self.symbol, self.index_np, self.last_index_np, value.index_np, value.last_index_np, self.data, value.data))
         value.data[value.data == 0] = value.data[value.index_np]
 
         mean_thresh = 0
