@@ -74,14 +74,14 @@ class symbolInfo:
             self.avg_price = self.sum_price / self.num
 
             if self.index_np == self.last_index_np:
-                self.data[self.last_index_np] = self.avg_price
+                self.data[self.last_index_np] = Decimal(self.avg_price)
 
             if self.index_np > self.last_index_np:
-                self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
+                self.data[(self.last_index_np+1):(self.index_np+1)] = Decimal(self.avg_price)
                 # logger.info("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
 
             if self.index_np < self.last_index_np:
-                self.data[(self.last_index_np+1):len_np] = self.avg_price
+                self.data[(self.last_index_np+1):len_np] = Decimal(self.avg_price)
                 # self.data[0:(self.index_np+1)] = self.avg_price
 
                 # logger.info("75 symbol : {}, index_np : {}, last_index_np : {}, avg_price : {}".format(self.symbol, self.index_np, self.last_index_np, self.avg_price, ))
@@ -103,7 +103,7 @@ class symbolInfo:
             self.avg_price = self.sum_price / self.num
             
             if self.index_np == self.last_index_np:
-                self.data[self.last_index_np] = self.avg_price
+                self.data[self.last_index_np] = Decimal(self.avg_price)
                 
             # if self.index_np > self.last_index_np:
             #     self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
@@ -113,30 +113,30 @@ class symbolInfo:
         value = dic[self.symbol]
         utc_now = datetime.utcnow() 
 
-        key_mean = np.mean(self.data)
-        value_mean = np.mean(value.data)
+        key_mean = Decimal(np.mean(self.data))
+        value_mean = Decimal(np.mean(value.data))
         # value.data[(len_np + value.index_np - 1) % len_np]
         logger.info("self.symbol : {}, self.index : {}, self.lastindex : {}, value.index : {}, value.lastindex : {}, self.data : {}, value.data : {}".format(self.symbol, self.index_np, self.last_index_np, value.index_np, value.last_index_np, self.data, value.data))
-        value.data[value.data == 0] = value.data[value.index_np]
+        value.data[value.data == 0] = Decimal(value.data[value.index_np])
 
         mean_thresh = 0
         if "USDT" in self.symbol:
-            mean_thresh = (key_mean - value_mean) / value_mean
+            mean_thresh = Decimal((key_mean - value_mean) / value_mean)
         else:
-            mean_thresh = (value_mean - key_mean) / key_mean
+            mean_thresh = Decimal((value_mean - key_mean) / key_mean)
 
         data = np.zeros(0)
         
         if "USDT" in self.symbol:
             for i in range(len_np):
-                new_data = np.array([self.data[i] - value.data[i]])
+                new_data = np.array(Decimal([self.data[i] - value.data[i]]))
                 data = np.concatenate((data, new_data))
         else:
             for i in range(len_np):
-                new_data = np.array([value.data[i] - self.data[i]])
+                new_data = np.array(Decimal([value.data[i] - self.data[i]]))
                 data = np.concatenate((data, new_data))  
 
-        std_thresh = np.std(data)
+        std_thresh = Decimal(np.std(data))
 
         logger.info("time_calc symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value index data : {}, value lastindex data : {}, data size : {}, time : {}"
             .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[value.last_index_np], value.data[value.index_np], np.size(data), utc_now))  
@@ -145,8 +145,8 @@ class symbolInfo:
             logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value index data : {}, value lastindex data : {}, data size : {}, time : {}"
                 .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[value.last_index_np], value.data[value.index_np], np.size(data), utc_now))  
         
-        self.data.fill(self.data[self.index_np])
-        value.data.fill(value.data[value.index_np])
+        self.data.fill(Decimal(self.data[self.index_np]))
+        value.data.fill(Decimal(value.data[value.index_np]))
         self.last_index_np = 0
         self.index_np = 0
         value.last_index_np = 0
