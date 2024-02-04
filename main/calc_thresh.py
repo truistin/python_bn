@@ -93,9 +93,7 @@ class symbolInfo:
                         return
                     self.time_calc()
             
-            self.last_index_np = self.index_np
-            print("last_index_np : {}, index_np : {}".format(self.last_index_np, self.index_np))
-            
+            self.last_index_np = self.index_np            
 
         else:
             self.sum_price = self.sum_price + mid_price
@@ -126,7 +124,6 @@ class symbolInfo:
             mean_thresh = (value_mean - key_mean) / key_mean
 
         data = np.zeros(0)
-        err_logger.error("key symbol : {}, value symbol : {}".format(self.symbol, value.symbol))
         
         if "USDT" in self.symbol:
             for i in range(len_np):
