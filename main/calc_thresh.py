@@ -86,15 +86,13 @@ class symbolInfo:
 
                 logger.info("75 symbol : {}, index_np : {}, last_index_np : {}, avg_price : {}".format(self.symbol, self.index_np, self.last_index_np, self.avg_price, ))
                 logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
-                with lock:
-                    if dict[self.base_symbol] == 0:
-                        self.last_index_np = self.index_np
-                        dict[self.base_symbol] = 1
-                        return
-                    self.time_calc()
-                    self.last_index_np = 0
-                    self.index_np = 0
-                    return
+                # with lock:
+                #     if dict[self.base_symbol] == 0:
+                #         self.last_index_np = self.index_np
+                #         dict[self.base_symbol] = 1
+                #         return
+                self.time_calc()
+                return
             
             self.last_index_np = self.index_np            
 
@@ -149,7 +147,11 @@ class symbolInfo:
         
         self.data.fill(self.data[self.index_np])
         value.data.fill(value.data[value.index_np])
-        dict[self.base_symbol] = 0
+        self.last_index_np = 0
+        self.index_np = 0
+        value.last_index_np = 0
+        value.index_np = 0
+        # dict[self.base_symbol] = 0
 
 def message_handler(_, message):
     # print(message)
