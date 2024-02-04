@@ -85,11 +85,11 @@ class symbolInfo:
 
                 print("75 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
                 logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
-                with lock:
-                    if dict[self.symbol] == 0:
-                        dict[self.symbol] = 1
-                        return
-                    self.time_calc()
+                # with lock:
+                if dict[self.symbol] == 0:
+                    dict[self.symbol] = 1
+                    return
+                self.time_calc()
             
             self.last_index_np = self.index_np
             print("last_index_np : {}, index_np : {}".format(self.last_index_np, self.index_np))
