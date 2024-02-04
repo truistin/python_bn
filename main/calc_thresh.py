@@ -34,7 +34,8 @@ len_np = 60
 
 dict = {"BTC":1,"ETC":1,"ADA":1,"FIL":1,"AVAX":1,"BCH":1,"LINK":1,"OP":1,"SOL":1,"ETH":1,"BNB":1,"DOT":1,"MATIC":1,"DOGE":1,"LTC":1,"XRP":1}
 class symbolInfo:
-    def __init__(self, symbol, op_symbol):
+    def __init__(self, symbol, op_symbol, base_symbol):
+        self.base_symbol = base_symbol
         self.symbol = symbol
         self.op_symbol = op_symbol
         self.avg_price = 0
@@ -85,10 +86,10 @@ class symbolInfo:
 
                 print("75 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
                 logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
-                # with lock:
-                if dict[self.symbol] == 0:
-                    dict[self.symbol] = 1
-                    return
+                with lock:
+                    if dict[self.base_symbol] == 0:
+                        dict[self.base_symbol] = 1
+                        return
                 self.time_calc()
             
             self.last_index_np = self.index_np
@@ -146,7 +147,7 @@ class symbolInfo:
         
         self.data.fill(0)
         value.data.fill(0)
-        dict[self.symbol] = 0
+        dict[self.base_symbol] = 0
 
 def message_handler(_, message):
     # print(message)
@@ -276,41 +277,41 @@ if __name__ == "__main__":
     etc,ada,fil,avax,bch,link,op,sol,eth,bnb,dot,matic,doge,ltc,xrp,btc
     """
 
-    eth_perp_sy = symbolInfo("ETHUSD_PERP", "ETHUSDT")
-    btc_perp_sy = symbolInfo("BTCUSD_PERP", "BTCUSDT")
-    sol_perp_sy = symbolInfo("SOLUSD_PERP", "SOLUSDT")
+    eth_perp_sy = symbolInfo("ETHUSD_PERP", "ETHUSDT", "ETH")
+    btc_perp_sy = symbolInfo("BTCUSD_PERP", "BTCUSDT", "BTC")
+    sol_perp_sy = symbolInfo("SOLUSD_PERP", "SOLUSDT", "SOL")
 
-    ada_perp_sy = symbolInfo("ADAUSD_PERP", "ADAUSDT")
-    fil_perp_sy = symbolInfo("FILUSD_PERP", "FILUSDT")
-    avax_perp_sy = symbolInfo("AVAXUSD_PERP", "AVAXUSDT")
-    bch_perp_sy = symbolInfo("BCHUSD_PERP", "BCHUSDT")
-    link_perp_sy = symbolInfo("LINKUSD_PERP", "LINKUSDT")
+    ada_perp_sy = symbolInfo("ADAUSD_PERP", "ADAUSDT", "ADA")
+    fil_perp_sy = symbolInfo("FILUSD_PERP", "FILUSDT", "FIL")
+    avax_perp_sy = symbolInfo("AVAXUSD_PERP", "AVAXUSDT", "AVAX")
+    bch_perp_sy = symbolInfo("BCHUSD_PERP", "BCHUSDT", "BCH")
+    link_perp_sy = symbolInfo("LINKUSD_PERP", "LINKUSDT", "LINK")
 
-    op_perp_sy = symbolInfo("OPUSD_PERP", "OPUSDT")
-    bnb_perp_sy = symbolInfo("BNBUSD_PERP", "BNBUSDT")
-    dot_perp_sy = symbolInfo("DOTUSD_PERP", "DOTUSDT")
-    matic_perp_sy = symbolInfo("MATICUSD_PERP", "MATICUSDT")
-    doge_perp_sy = symbolInfo("DOGEUSD_PERP", "DOGEUSDT")
-    ltc_perp_sy = symbolInfo("LTCUSD_PERP", "LTCUSDT")
-    xrp_perp_sy = symbolInfo("XRPUSD_PERP", "XRPUSDT")
+    op_perp_sy = symbolInfo("OPUSD_PERP", "OPUSDT", "OP")
+    bnb_perp_sy = symbolInfo("BNBUSD_PERP", "BNBUSDT", "BNB")
+    dot_perp_sy = symbolInfo("DOTUSD_PERP", "DOTUSDT", "DOT")
+    matic_perp_sy = symbolInfo("MATICUSD_PERP", "MATICUSDT", "MATIC")
+    doge_perp_sy = symbolInfo("DOGEUSD_PERP", "DOGEUSDT", "DOGE")
+    ltc_perp_sy = symbolInfo("LTCUSD_PERP", "LTCUSDT", "LTC")
+    xrp_perp_sy = symbolInfo("XRPUSD_PERP", "XRPUSDT", "XRP")
 
-    eth_swap_sy = symbolInfo("ETHUSDT", "ETHUSD_PERP")
-    btc_swap_sy = symbolInfo("BTCUSDT", "BTCUSD_PERP")
-    sol_swap_sy = symbolInfo("SOLUSDT", "SOLUSD_PERP")
+    eth_swap_sy = symbolInfo("ETHUSDT", "ETHUSD_PERP", "ETH")
+    btc_swap_sy = symbolInfo("BTCUSDT", "BTCUSD_PERP", "BTC")
+    sol_swap_sy = symbolInfo("SOLUSDT", "SOLUSD_PERP", "SOL")
 
-    ada_swap_sy = symbolInfo("ADAUSDT", "ADAUSD_PERP")
-    fil_swap_sy = symbolInfo("FILUSDT", "FILUSD_PERP")
-    avax_swap_sy = symbolInfo("AVAXUSDT", "AVAXUSD_PERP")
-    bch_swap_sy = symbolInfo("BCHUSDT", "BCHUSD_PERP")
-    link_swap_sy = symbolInfo("LINKUSDT", "LINKUSD_PERP")
+    ada_swap_sy = symbolInfo("ADAUSDT", "ADAUSD_PERP", "ADA")
+    fil_swap_sy = symbolInfo("FILUSDT", "FILUSD_PERP", "FIL")
+    avax_swap_sy = symbolInfo("AVAXUSDT", "AVAXUSD_PERP", "AVAX")
+    bch_swap_sy = symbolInfo("BCHUSDT", "BCHUSD_PERP", "BCH")
+    link_swap_sy = symbolInfo("LINKUSDT", "LINKUSD_PERP", "LINK")
 
-    op_swap_sy = symbolInfo("OPUSDT", "OPUSD_PERP")
-    bnb_swap_sy = symbolInfo("BNBUSDT", "BNBUSD_PERP")
-    dot_swap_sy = symbolInfo("DOTUSDT", "DOTUSD_PERP")
-    matic_swap_sy = symbolInfo("MATICUSDT", "MATICUSD_PERP")
-    doge_swao_sy = symbolInfo("DOGEUSDT", "DOGEUSD_PERP")
-    ltc_swap_sy = symbolInfo("LTCUSDT", "LTCUSD_PERP")
-    xrp_swap_sy = symbolInfo("XRPUSDT", "XRPUSD_PERP")
+    op_swap_sy = symbolInfo("OPUSDT", "OPUSD_PERP", "OP")
+    bnb_swap_sy = symbolInfo("BNBUSDT", "BNBUSD_PERP", "BNB")
+    dot_swap_sy = symbolInfo("DOTUSDT", "DOTUSD_PERP", "DOT")
+    matic_swap_sy = symbolInfo("MATICUSDT", "MATICUSD_PERP", "MATIC")
+    doge_swao_sy = symbolInfo("DOGEUSDT", "DOGEUSD_PERP", "DOGE")
+    ltc_swap_sy = symbolInfo("LTCUSDT", "LTCUSD_PERP", "LTC")
+    xrp_swap_sy = symbolInfo("XRPUSDT", "XRPUSD_PERP", "XRP")
     """
     dic = {eth_swap_sy:eth_perp_sy, btc_swap_sy:btc_perp_sy, sol_swap_sy:sol_perp_sy, ada_swap_sy:ada_perp_sy\
         , fil_swap_sy:fil_perp_sy, avax_swap_sy:avax_perp_sy, bch_swap_sy:bch_perp_sy, link_swap_sy:link_perp_sy\
