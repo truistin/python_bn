@@ -162,9 +162,9 @@ def message_handler(_, message):
 
 def subscribeUM():
     my_client = UMFuturesWebsocketClient(on_message=message_handler)
-    # my_client1 = UMFuturesWebsocketClient(on_message=message_handler)
+    my_client1 = UMFuturesWebsocketClient(on_message=message_handler)
     my_client.book_ticker(symbol="ethusdt")
-    # my_client.book_ticker(symbol="btcusdt")
+    my_client.book_ticker(symbol="btcusdt")
     # my_client.book_ticker(symbol="solusdt")
 
     # my_client.book_ticker(symbol="adausdt")
@@ -174,29 +174,41 @@ def subscribeUM():
     # my_client.book_ticker(symbol="linkusdt")
 
     # my_client1.book_ticker(symbol="opusdt")
-    # my_client1.book_ticker(symbol="bnbusdt")
+    my_client1.book_ticker(symbol="bnbusdt")
     # my_client1.book_ticker(symbol="dotusdt")
     # my_client1.book_ticker(symbol="maticusdt")
-    # my_client1.book_ticker(symbol="dogeusdt")
+    my_client1.book_ticker(symbol="dogeusdt")
     # my_client1.book_ticker(symbol="ltcusdt")
     # my_client1.book_ticker(symbol="xrpusdt")
 
 def subscribeCM():
     my_client = CMFuturesWebsocketClient(on_message=message_handler)
-    # my_client1 = CMFuturesWebsocketClient(on_message=message_handler)
+    my_client1 = CMFuturesWebsocketClient(on_message=message_handler)
 
     my_client.book_ticker(
         id=13,
         callback=message_handler,
         symbol="ethusd_perp",
     )
-"""
+
     my_client.book_ticker(
         id=13,
         callback=message_handler,
         symbol="btcusd_perp",
     )
 
+    my_client1.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="bnbusd_perp",
+    )
+
+    my_client1.book_ticker(
+        id=13,
+        callback=message_handler,
+        symbol="dogeusd_perp",
+    )
+"""
     my_client.book_ticker(
         id=13,
         callback=message_handler,
@@ -242,12 +254,6 @@ def subscribeCM():
     my_client1.book_ticker(
         id=13,
         callback=message_handler,
-        symbol="bnbusd_perp",
-    )
-
-    my_client1.book_ticker(
-        id=13,
-        callback=message_handler,
         symbol="dotusd_perp",
     )
 
@@ -255,12 +261,6 @@ def subscribeCM():
         id=13,
         callback=message_handler,
         symbol="maticusd_perp",
-    )
-
-    my_client1.book_ticker(
-        id=13,
-        callback=message_handler,
-        symbol="dogeusd_perp",
     )
 
     my_client1.book_ticker(
@@ -313,20 +313,20 @@ if __name__ == "__main__":
     bnb_swap_sy = symbolInfo("BNBUSDT", "BNBUSD_PERP", "BNB")
     dot_swap_sy = symbolInfo("DOTUSDT", "DOTUSD_PERP", "DOT")
     matic_swap_sy = symbolInfo("MATICUSDT", "MATICUSD_PERP", "MATIC")
-    doge_swao_sy = symbolInfo("DOGEUSDT", "DOGEUSD_PERP", "DOGE")
+    doge_swap_sy = symbolInfo("DOGEUSDT", "DOGEUSD_PERP", "DOGE")
     ltc_swap_sy = symbolInfo("LTCUSDT", "LTCUSD_PERP", "LTC")
     xrp_swap_sy = symbolInfo("XRPUSDT", "XRPUSD_PERP", "XRP")
     """
     dic = {eth_swap_sy:eth_perp_sy, btc_swap_sy:btc_perp_sy, sol_swap_sy:sol_perp_sy, ada_swap_sy:ada_perp_sy\
         , fil_swap_sy:fil_perp_sy, avax_swap_sy:avax_perp_sy, bch_swap_sy:bch_perp_sy, link_swap_sy:link_perp_sy\
             , op_swap_sy:op_perp_sy, bnb_swap_sy:bnb_perp_sy, dot_swap_sy:dot_perp_sy, matic_swap_sy:matic_perp_sy\
-            , doge_swao_sy:doge_perp_sy, ltc_swap_sy:ltc_perp_sy, xrp_swap_sy:xrp_perp_sy}"""
+            , doge_swap_sy:doge_perp_sy, ltc_swap_sy:ltc_perp_sy, xrp_swap_sy:xrp_perp_sy}"""
     
     dic = {"ETHUSD_PERP":eth_swap_sy, "ETHUSDT":eth_perp_sy}
 
     lst = []
     lst.append(eth_perp_sy)
-    # lst.append(btc_perp_sy)
+    lst.append(btc_perp_sy)
     # lst.append(sol_perp_sy)
 
     # lst.append(ada_perp_sy)
@@ -336,15 +336,15 @@ if __name__ == "__main__":
     # lst.append(link_perp_sy)
 
     # lst.append(op_perp_sy)
-    # lst.append(bnb_perp_sy)
+    lst.append(bnb_perp_sy)
     # lst.append(dot_perp_sy)
     # lst.append(matic_perp_sy)
-    # lst.append(doge_perp_sy)
+    lst.append(doge_perp_sy)
     # lst.append(ltc_perp_sy)
     # lst.append(xrp_perp_sy)
 
     lst.append(eth_swap_sy)
-    # lst.append(btc_swap_sy)
+    lst.append(btc_swap_sy)
     # lst.append(sol_swap_sy)
 
     # lst.append(ada_swap_sy)
@@ -354,10 +354,10 @@ if __name__ == "__main__":
     # lst.append(link_swap_sy)
 
     # lst.append(op_swap_sy)
-    # lst.append(bnb_swap_sy)
+    lst.append(bnb_swap_sy)
     # lst.append(dot_swap_sy)
     # lst.append(matic_swap_sy)
-    # lst.append(doge_swao_sy)
+    lst.append(doge_swap_sy)
     # lst.append(ltc_swap_sy)
     # lst.append(xrp_swap_sy)
     # print(lst)
