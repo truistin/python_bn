@@ -147,8 +147,8 @@ class symbolInfo:
             logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value index data : {}, value lastindex data : {}, data size : {}, time : {}"
                 .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[value.last_index_np], value.data[value.index_np], np.size(data), utc_now))  
         
-        self.data.fill(0)
-        value.data.fill(0)
+        self.data.fill(self.data[self.index_np])
+        value.data.fill(value.data[value.index_np])
         dict[self.base_symbol] = 0
 
 def message_handler(_, message):
