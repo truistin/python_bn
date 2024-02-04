@@ -78,14 +78,14 @@ class symbolInfo:
 
             if self.index_np > self.last_index_np:
                 self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
-                logger.info("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
+                # logger.info("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
 
             if self.index_np < self.last_index_np:
                 self.data[(self.last_index_np+1):len_np] = self.avg_price
                 # self.data[0:(self.index_np+1)] = self.avg_price
 
-                logger.info("75 symbol : {}, index_np : {}, last_index_np : {}, avg_price : {}".format(self.symbol, self.index_np, self.last_index_np, self.avg_price, ))
-                logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
+                # logger.info("75 symbol : {}, index_np : {}, last_index_np : {}, avg_price : {}".format(self.symbol, self.index_np, self.last_index_np, self.avg_price, ))
+                # logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
                 # with lock:
                 #     if dict[self.base_symbol] == 0:
                 #         self.last_index_np = self.index_np
@@ -116,7 +116,7 @@ class symbolInfo:
         key_mean = np.mean(self.data)
         value_mean = np.mean(value.data)
         # value.data[(len_np + value.index_np - 1) % len_np]
-        logger.info("self.symbol : {}, self.index : {}, self.lastindex : {}, value.index : {}, value.lastindex : {}, self.data : {}, value.data : {}".format(self.symbol, self.index_np, self.last_index_np, value.index_np, value.last_index_np, self.data, value.data))
+        # logger.info("self.symbol : {}, self.index : {}, self.lastindex : {}, value.index : {}, value.lastindex : {}, self.data : {}, value.data : {}".format(self.symbol, self.index_np, self.last_index_np, value.index_np, value.last_index_np, self.data, value.data))
         value.data[value.data == 0] = value.data[value.index_np]
 
         mean_thresh = 0
@@ -138,7 +138,7 @@ class symbolInfo:
 
         std_thresh = np.std(data)
 
-        logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value index data : {}, value lastindex data : {}, data size : {}, time : {}"
+        logger.info("time_calc symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value index data : {}, value lastindex data : {}, data size : {}, time : {}"
             .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[value.last_index_np], value.data[value.index_np], np.size(data), utc_now))  
             
         if mean_thresh >= 0.0008 or mean_thresh <= -0.0008:
