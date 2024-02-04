@@ -125,6 +125,8 @@ class symbolInfo:
 
         data = np.zeros(0)
         
+        print("self.data : {}, value.data : {}".format(self.data, value.data))
+        
         if "USDT" in self.symbol:
             for i in range(len_np):
                 new_data = np.array([self.data[i] - value.data[i]])
