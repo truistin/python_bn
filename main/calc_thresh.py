@@ -320,9 +320,9 @@ if __name__ == "__main__":
             , op_swap_sy:op_perp_sy, bnb_swap_sy:bnb_perp_sy, dot_swap_sy:dot_perp_sy, matic_swap_sy:matic_perp_sy\
             , doge_swap_sy:doge_perp_sy, ltc_swap_sy:ltc_perp_sy, xrp_swap_sy:xrp_perp_sy}"""
     
-    dic = {"ETHUSD_PERP":eth_swap_sy, "ETHUSDT":eth_perp_sy, "BTCUSD_PERP":btc_swap_sy, "BTCUSDT":btc_perp_sy, \
-            "BNBUSD_PERP":bnb_swap_sy, "BNBUSDT":bnb_perp_sy, "DOGEUSD_PERP":doge_swap_sy, "DOGEUSDT":doge_perp_sy, \
-            "SOLUSD_PERP":sol_swap_sy, "SOLUSDT": sol_perp_sy, "ADAUSD_PERP":ada_swap_sy, "ADAUSDT":ada_perp_sy, \
+    dic = {"ETHUSD_PERP":eth_swap_sy, "ETHUSDT":eth_perp_sy, "BTCUSD_PERP":btc_swap_sy, "BTCUSDT":btc_perp_sy,
+            "BNBUSD_PERP":bnb_swap_sy, "BNBUSDT":bnb_perp_sy, "DOGEUSD_PERP":doge_swap_sy, "DOGEUSDT":doge_perp_sy,
+            "SOLUSD_PERP":sol_swap_sy, "SOLUSDT": sol_perp_sy, "ADAUSD_PERP":ada_swap_sy, "ADAUSDT":ada_perp_sy,
             "MATICUSD_PERP":matic_swap_sy, "MATICUSDT": matic_perp_sy, "LTCUSD_PERP":ltc_swap_sy, "LTCUSDT":ltc_perp_sy}
 
     lst = []
