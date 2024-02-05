@@ -168,18 +168,18 @@ def subscribeUM():
     my_client.book_ticker(symbol="solusdt")
 
     my_client.book_ticker(symbol="adausdt")
-    # my_client.book_ticker(symbol="filusdt")
-    # my_client.book_ticker(symbol="avaxusdt")
-    # my_client.book_ticker(symbol="bchusdt")
-    # my_client.book_ticker(symbol="linkusdt")
+    my_client.book_ticker(symbol="filusdt")
+    my_client.book_ticker(symbol="avaxusdt")
+    my_client.book_ticker(symbol="bchusdt")
+    my_client.book_ticker(symbol="linkusdt")
 
-    # my_client1.book_ticker(symbol="opusdt")
+    my_client1.book_ticker(symbol="opusdt")
     my_client1.book_ticker(symbol="bnbusdt")
-    # my_client1.book_ticker(symbol="dotusdt")
+    my_client1.book_ticker(symbol="dotusdt")
     my_client1.book_ticker(symbol="maticusdt")
     my_client1.book_ticker(symbol="dogeusdt")
     my_client1.book_ticker(symbol="ltcusdt")
-    # my_client1.book_ticker(symbol="xrpusdt")
+    my_client1.book_ticker(symbol="xrpusdt")
 
 def subscribeCM():
     my_client = CMFuturesWebsocketClient(on_message=message_handler)
@@ -230,7 +230,6 @@ def subscribeCM():
         callback=message_handler,
         symbol="ltcusd_perp",
     )
-"""
     my_client.book_ticker(
         id=13,
         callback=message_handler,
@@ -271,7 +270,7 @@ def subscribeCM():
         id=13,
         callback=message_handler,
         symbol="xrpusd_perp",
-    )"""
+    )
 
 if __name__ == "__main__":
     """
@@ -323,44 +322,47 @@ if __name__ == "__main__":
     dic = {"ETHUSD_PERP":eth_swap_sy, "ETHUSDT":eth_perp_sy, "BTCUSD_PERP":btc_swap_sy, "BTCUSDT":btc_perp_sy,
             "BNBUSD_PERP":bnb_swap_sy, "BNBUSDT":bnb_perp_sy, "DOGEUSD_PERP":doge_swap_sy, "DOGEUSDT":doge_perp_sy,
             "SOLUSD_PERP":sol_swap_sy, "SOLUSDT": sol_perp_sy, "ADAUSD_PERP":ada_swap_sy, "ADAUSDT":ada_perp_sy,
-            "MATICUSD_PERP":matic_swap_sy, "MATICUSDT": matic_perp_sy, "LTCUSD_PERP":ltc_swap_sy, "LTCUSDT":ltc_perp_sy}
-
+            "MATICUSD_PERP":matic_swap_sy, "MATICUSDT": matic_perp_sy, "LTCUSD_PERP":ltc_swap_sy, "LTCUSDT":ltc_perp_sy,
+            "FILUSD_PERP":fil_swap_sy, "FILUSDT": fil_perp_sy, "AVAXUSD_PERP":avax_swap_sy, "AVAXUSDT":avax_perp_sy,
+            "BCHUSD_PERP":bch_swap_sy, "BCHUSDT": bch_perp_sy, "LINKUSD_PERP":link_swap_sy, "LINKUSDT":link_perp_sy,
+            "OPUSD_PERP":op_swap_sy, "OPUSDT": op_perp_sy, "DOTUSD_PERP":dot_swap_sy, "DOTUSDT":dot_perp_sy,
+            "XRPUSD_PERP":xrp_swap_sy, "XRPUSDT": xrp_perp_sy}
     lst = []
     lst.append(eth_perp_sy)
     lst.append(btc_perp_sy)
     lst.append(sol_perp_sy)
 
     lst.append(ada_perp_sy)
-    # lst.append(fil_perp_sy)
-    # lst.append(avax_perp_sy)
-    # lst.append(bch_perp_sy)
-    # lst.append(link_perp_sy)
+    lst.append(fil_perp_sy)
+    lst.append(avax_perp_sy)
+    lst.append(bch_perp_sy)
+    lst.append(link_perp_sy)
 
-    # lst.append(op_perp_sy)
+    lst.append(op_perp_sy)
     lst.append(bnb_perp_sy)
-    # lst.append(dot_perp_sy)
+    lst.append(dot_perp_sy)
     lst.append(matic_perp_sy)
     lst.append(doge_perp_sy)
     lst.append(ltc_perp_sy)
-    # lst.append(xrp_perp_sy)
+    lst.append(xrp_perp_sy)
 
     lst.append(eth_swap_sy)
     lst.append(btc_swap_sy)
     lst.append(sol_swap_sy)
 
     lst.append(ada_swap_sy)
-    # lst.append(fil_swap_sy)
-    # lst.append(avax_swap_sy)
-    # lst.append(bch_swap_sy)
-    # lst.append(link_swap_sy)
+    lst.append(fil_swap_sy)
+    lst.append(avax_swap_sy)
+    lst.append(bch_swap_sy)
+    lst.append(link_swap_sy)
 
-    # lst.append(op_swap_sy)
+    lst.append(op_swap_sy)
     lst.append(bnb_swap_sy)
-    # lst.append(dot_swap_sy)
+    lst.append(dot_swap_sy)
     lst.append(matic_swap_sy)
     lst.append(doge_swap_sy)
     lst.append(ltc_swap_sy)
-    # lst.append(xrp_swap_sy)
+    lst.append(xrp_swap_sy)
     # print(lst)
 
     subscribeUM()
