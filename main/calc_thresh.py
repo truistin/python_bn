@@ -30,7 +30,7 @@ file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 err_logger.addHandler(file_handler)  
 
-len_np = 300
+len_np = 600
 
 dict = {"BTC":1,"ETC":1,"ADA":1,"FIL":1,"AVAX":1,"BCH":1,"LINK":1,"OP":1,"SOL":1,"ETH":1,"BNB":1,"DOT":1,"MATIC":1,"DOGE":1,"LTC":1,"XRP":1}
 class symbolInfo:
@@ -134,9 +134,17 @@ class symbolInfo:
         else:
             for i in range(len_np):
                 new_data = np.array([value.data[i] - self.data[i]])
-                data = np.concatenate((data, new_data))  
+                data = np.concatenate((data, new_data)) 
 
-        std_thresh = np.std(data)
+
+        mean_thresh_std = np.mean(data) 
+        len = np.size(data)
+        spread_std_array = np.empty(len, dtype=float)  
+
+        for i in range(len):
+            spread_std_array[i] = data[i] / mean_thresh_std
+
+        std_thresh = np.std(spread_std_array)
 
         logger.info("time_calc symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value index data : {}, value lastindex data : {}, data size : {}, time : {}"
             .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[value.last_index_np], value.data[value.index_np], np.size(data), utc_now))  
