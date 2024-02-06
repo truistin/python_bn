@@ -159,12 +159,10 @@ class symbolInfo:
 
         logger.info("calc std mean : {}, data : {}, spread_data : {}, mean_thresh_value : {}, spread_thresh : {}".format(self.symbol, data, spread_data, mean_thresh_value, spread_thresh))
         
-        logger.info(f"time_calc symbol : {self.symbol}, value symbol : {value.symbol}, key mean : {key_mean}, value mean : {value_mean}, mean_thresh : {mean_thresh}, mean_thresh_value : {mean_thresh_value}, std thresh : {spread_thresh}, 
-                        value index data : {value.data[value.index_np]}, value lastindex data : {value.data[value.last_index_np]}, time : {utc_now}")
+        logger.info(f"time_calc symbol : {self.symbol}, value symbol : {value.symbol}, key mean : {key_mean}, value mean : {value_mean}, mean_thresh : {mean_thresh}, mean_thresh_value : {mean_thresh_value}, std thresh : {spread_thresh}, value index data : {value.data[value.index_np]}, value lastindex data : {value.data[value.last_index_np]}, time : {utc_now}")
             
         if mean_thresh >= 0.0008 or mean_thresh <= -0.0008:
-            logger.info(f"vaild symbol : {self.symbol}, value symbol : {value.symbol}, key mean : {key_mean}, value mean : {value_mean}, mean thresh : {mean_thresh}, std thresh : {spread_thresh}, value index data : {value.data[value.index_np]}, 
-                    value lastindex data : {value.data[value.index_np]}, mean_thresh_value : {mean_thresh_value}, time : {utc_now}")
+            logger.info(f"vaild symbol : {self.symbol}, value symbol : {value.symbol}, key mean : {key_mean}, value mean : {value_mean}, mean thresh : {mean_thresh}, std thresh : {spread_thresh}, value index data : {value.data[value.index_np]}, value lastindex data : {value.data[value.index_np]}, mean_thresh_value : {mean_thresh_value}, time : {utc_now}")
         
         self.data.fill(self.data[self.index_np])
         value.data.fill(value.data[value.index_np])
