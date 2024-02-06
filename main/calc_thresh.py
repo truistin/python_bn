@@ -137,22 +137,24 @@ class symbolInfo:
                 data = np.concatenate((data, new_data)) 
 
 
-        mean_thresh_std = np.mean(data) 
+        mean_thresh_value = np.mean(data) 
+        std_thresh_value = np.std(data)
+
         len = np.size(data)
-        spread_std_array = np.empty(len, dtype=float)  
-
+        spread_data = np.empty(len, dtype=float)
+        
         for i in range(len):
-            spread_std_array[i] = data[i] / mean_thresh_std
+            spread_data[i] = (data[i] - mean_thresh_value) / std_thresh_value
 
-        std_thresh = np.std(spread_std_array)
+        std_thresh = np.mean(spread_data)
 
-        logger.info("calc std mean : {}, data : {}, spread_std_array : {}, mean_thresh_std : {}, std_thresh : {}".format(self.symbol, data, spread_std_array, mean_thresh_std, std_thresh))
-        logger.info("time_calc symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value index data : {}, value lastindex data : {}, data size : {}, mean_thresh_std : {}, time : {}"
-            .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[value.last_index_np], value.data[value.index_np], np.size(data), mean_thresh_std, utc_now))  
+        logger.info("calc std mean : {}, data : {}, spread_data : {}, mean_thresh_value : {}, std_thresh : {}".format(self.symbol, data, spread_data, mean_thresh_value, std_thresh))
+        logger.info("time_calc symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value index data : {}, value lastindex data : {}, data size : {}, mean_thresh_value : {}, time : {}"
+            .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[value.last_index_np], value.data[value.index_np], np.size(data), mean_thresh_value, utc_now))  
             
         if mean_thresh >= 0.0008 or mean_thresh <= -0.0008:
-            logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value index data : {}, value lastindex data : {}, data size : {}, mean_thresh_std : {}, time : {}"
-                .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[value.last_index_np], value.data[value.index_np], np.size(data), mean_thresh_std, utc_now))  
+            logger.info("vaild symbol : {}, value symbol : {}, key mean : {}, value mean : {}, mean thresh : {}, std thresh : {}, value index data : {}, value lastindex data : {}, data size : {}, mean_thresh_value : {}, time : {}"
+                .format(self.symbol, value.symbol , key_mean, value_mean, mean_thresh, std_thresh, value.data[value.last_index_np], value.data[value.index_np], np.size(data), mean_thresh_value, utc_now))  
         
         self.data.fill(self.data[self.index_np])
         value.data.fill(value.data[value.index_np])
