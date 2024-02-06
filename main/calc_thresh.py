@@ -41,6 +41,8 @@ class symbolInfo:
         self.avg_price = 0
         self.data = np.zeros(len_np)
 
+        self.lock = threading.Lock()  
+
         self.sum_price = 0
         self.num = 0
         self.last_time_stamp = 0
@@ -56,57 +58,58 @@ class symbolInfo:
         return False  
 
     def calc(self, ask, bid, stamp1):
-        stamp = int(stamp1)
-        mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
-        self.index_np = self.last_time_stamp % len_np
+        with self.lock:
+            stamp = int(stamp1)
+            mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
+            self.index_np = self.last_time_stamp % len_np
 
-        if self.last_time_stamp != int(stamp / 1000):
-            print("52 symbol : {}, index_np : {}, last_index_np : {}, last_time_stamp : {}, stamp : {}".format(self.symbol, self.index_np, self.last_index_np, self.last_time_stamp, stamp))
+            if self.last_time_stamp != int(stamp / 1000):
+                print("52 symbol : {}, index_np : {}, last_index_np : {}, last_time_stamp : {}, stamp : {}".format(self.symbol, self.index_np, self.last_index_np, self.last_time_stamp, stamp))
 
-            self.last_time_stamp = int(stamp / 1000)
+                self.last_time_stamp = int(stamp / 1000)
 
-            self.sum_price = 0
-            self.num = 0
-            
-            self.sum_price = self.sum_price + mid_price
-            self.num = self.num + 1
-
-            self.avg_price = self.sum_price / self.num
-
-            if self.index_np == self.last_index_np:
-                self.data[self.last_index_np] = self.avg_price
-
-            if self.index_np > self.last_index_np:
-                self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
-                # logger.info("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
-
-            if self.index_np < self.last_index_np:
-                self.data[(self.last_index_np+1):len_np] = self.avg_price
-                # self.data[0:(self.index_np+1)] = self.avg_price
-
-                # logger.info("75 symbol : {}, index_np : {}, last_index_np : {}, avg_price : {}".format(self.symbol, self.index_np, self.last_index_np, self.avg_price, ))
-                # logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
-                # with lock:
-                #     if dict[self.base_symbol] == 0:
-                #         self.last_index_np = self.index_np
-                #         dict[self.base_symbol] = 1
-                #         return
-                self.time_calc()
-                return
-            
-            self.last_index_np = self.index_np            
-
-        else:
-            self.sum_price = self.sum_price + mid_price
-            self.num = self.num + 1
-
-            self.avg_price = self.sum_price / self.num
-            
-            if self.index_np == self.last_index_np:
-                self.data[self.last_index_np] = self.avg_price
+                self.sum_price = 0
+                self.num = 0
                 
-            # if self.index_np > self.last_index_np:
-            #     self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
+                self.sum_price = self.sum_price + mid_price
+                self.num = self.num + 1
+
+                self.avg_price = self.sum_price / self.num
+
+                if self.index_np == self.last_index_np:
+                    self.data[self.last_index_np] = self.avg_price
+
+                if self.index_np > self.last_index_np:
+                    self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
+                    # logger.info("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
+
+                if self.index_np < self.last_index_np:
+                    self.data[(self.last_index_np+1):len_np] = self.avg_price
+                    # self.data[0:(self.index_np+1)] = self.avg_price
+
+                    # logger.info("75 symbol : {}, index_np : {}, last_index_np : {}, avg_price : {}".format(self.symbol, self.index_np, self.last_index_np, self.avg_price, ))
+                    # logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
+                    # with lock:
+                    #     if dict[self.base_symbol] == 0:
+                    #         self.last_index_np = self.index_np
+                    #         dict[self.base_symbol] = 1
+                    #         return
+                    self.time_calc()
+                    return
+                
+                self.last_index_np = self.index_np            
+
+            else:
+                self.sum_price = self.sum_price + mid_price
+                self.num = self.num + 1
+
+                self.avg_price = self.sum_price / self.num
+                
+                if self.index_np == self.last_index_np:
+                    self.data[self.last_index_np] = self.avg_price
+                    
+                # if self.index_np > self.last_index_np:
+                #     self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
 
 
     def time_calc(self):
