@@ -141,7 +141,7 @@ class symbolInfo:
         spread_data = np.empty(len, dtype=float)
         for i in range(len):
             spread_data[i] = data[i] / mean_thresh_value
-        spread_thresh = np.mean(spread_data)
+        spread_thresh = np.std(spread_data)
 
 
         """
