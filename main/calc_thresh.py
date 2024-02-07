@@ -81,11 +81,15 @@ class symbolInfo:
                     self.data[self.last_index_np] = self.avg_price
 
                 if self.index_np > self.last_index_np:
-                    self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
+                    if self.index_np < len_np - 1:
+                        self.data[self.last_index_np:len_np] = self.avg_price
+                    else:
+                        self.data[self.last_index_np:self.index_np] = self.avg_price
+                    # self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
                     # logger.info("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
 
                 if self.index_np < self.last_index_np:
-                    self.data[(self.last_index_np+1):len_np] = self.avg_price
+                    self.data[self.last_index_np:len_np] = self.avg_price
                     # self.data[0:(self.index_np+1)] = self.avg_price
 
                     # logger.info("75 symbol : {}, index_np : {}, last_index_np : {}, avg_price : {}".format(self.symbol, self.index_np, self.last_index_np, self.avg_price, ))
@@ -117,7 +121,7 @@ class symbolInfo:
         value = dic[self.symbol]
         utc_now = datetime.utcnow() 
 
-        value.data[(value.last_index_np+1):len_np] = value.data[value.index_np]
+        value.data[value.last_index_np:len_np] = value.avg_price
         key_mean = np.mean(self.data)
         value_mean = np.mean(value.data)
         # value.data[(len_np + value.index_np - 1) % len_np]
@@ -163,18 +167,17 @@ class symbolInfo:
 
         logger.info("calc std mean : {}, data : {}, spread_data : {}, mean_thresh_value : {}, spread_thresh : {}, md_price : {}".format(self.symbol, data, spread_data, mean_thresh_value, spread_thresh, self.mid_price))
         
-        logger.info(f"time_calc symbol : {self.symbol}, value symbol : {value.symbol}, mid_price : {self.mid_price}, key mean : {key_mean}, value mean : {value_mean}, mean_thresh : {mean_thresh}, mean_thresh_value : {mean_thresh_value}, std thresh : {spread_thresh}, value index data : {value.data[value.index_np]}, value lastindex data : {value.data[value.last_index_np]}, time : {utc_now}")
+        logger.info(f"time_calc symbol : {self.symbol}, value symbol : {value.symbol}, key avg_price : {self.avg_price}, value avg_value : {value.avg_price} , key mean : {key_mean}, value mean : {value_mean}, mean_thresh : {mean_thresh}, mean_thresh_value : {mean_thresh_value}, std thresh : {spread_thresh}, value index data : {value.data[value.index_np]}, value lastindex data : {value.data[value.last_index_np]}, time : {utc_now}")
             
         if mean_thresh >= 0.0008 or mean_thresh <= -0.0008:
-            logger.info(f"vaild symbol : {self.symbol}, value symbol : {value.symbol}, mid_price : {self.mid_price}, key mean : {key_mean}, value mean : {value_mean}, mean thresh : {mean_thresh}, std thresh : {spread_thresh}, value index data : {value.data[value.index_np]}, value lastindex data : {value.data[value.index_np]}, mean_thresh_value : {mean_thresh_value}, time : {utc_now}")
+            logger.info(f"vaild symbol : {self.symbol}, value symbol : {value.symbol}, key avg_price : {self.avg_price}, value avg_value : {value.avg_price} , key mean : {key_mean}, value mean : {value_mean}, mean thresh : {mean_thresh}, std thresh : {spread_thresh}, value index data : {value.data[value.index_np]}, value lastindex data : {value.data[value.index_np]}, mean_thresh_value : {mean_thresh_value}, time : {utc_now}")
         
-        self.data.fill(self.data[self.index_np])
-        value.data.fill(value.data[value.index_np])
+        # self.data.fill(self.avg_price)
+        # value.data.fill(value.avg_price)
         self.last_index_np = 0
         self.index_np = 0
         value.last_index_np = 0
         value.index_np = 0
-        # dict[self.base_symbol] = 0
 
 def message_handler(_, message):
     # print(message)
