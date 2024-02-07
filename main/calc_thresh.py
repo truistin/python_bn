@@ -82,9 +82,9 @@ class symbolInfo:
 
                 if self.index_np > self.last_index_np:
                     if self.index_np < len_np - 1:
-                        self.data[self.last_index_np:len_np] = self.avg_price
-                    else:
                         self.data[self.last_index_np:self.index_np] = self.avg_price
+                    else:
+                        self.data[self.last_index_np:len_np] = self.avg_price
                     # self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
                     # logger.info("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
 
