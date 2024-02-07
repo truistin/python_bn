@@ -30,7 +30,7 @@ file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 err_logger.addHandler(file_handler)  
 
-len_np = 300
+len_np = 600
 
 dict = {"BTC":1,"ETC":1,"ADA":1,"FIL":1,"AVAX":1,"BCH":1,"LINK":1,"OP":1,"SOL":1,"ETH":1,"BNB":1,"DOT":1,"MATIC":1,"DOGE":1,"LTC":1,"XRP":1}
 class symbolInfo:
@@ -81,16 +81,12 @@ class symbolInfo:
                     self.data[self.last_index_np] = self.avg_price
 
                 if self.index_np > self.last_index_np:
-                    if self.index_np < len_np - 1:
+                    if self.index_np < len_np:
                         self.data[self.last_index_np:self.index_np] = self.avg_price
-                    else:
-                        self.data[self.last_index_np:len_np] = self.avg_price
-                    # self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
                     # logger.info("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
 
                 if self.index_np < self.last_index_np:
                     self.data[self.last_index_np:len_np] = self.avg_price
-                    # self.data[0:(self.index_np+1)] = self.avg_price
 
                     # logger.info("75 symbol : {}, index_np : {}, last_index_np : {}, avg_price : {}".format(self.symbol, self.index_np, self.last_index_np, self.avg_price, ))
                     # logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
