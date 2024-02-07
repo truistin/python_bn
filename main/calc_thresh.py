@@ -116,7 +116,7 @@ class symbolInfo:
         value = dic[self.symbol]
         utc_now = datetime.utcnow() 
 
-        value.data[value.data == 0] = value.data[value.index_np]
+        value.data[(value.last_index_np+1):len_np] = value.data[value.index_np]
         key_mean = np.mean(self.data)
         value_mean = np.mean(value.data)
         # value.data[(len_np + value.index_np - 1) % len_np]
