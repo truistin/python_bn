@@ -30,7 +30,7 @@ file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 err_logger.addHandler(file_handler)  
 
-len_np = 600
+len_np = 300
 
 dict = {"BTC":1,"ETC":1,"ADA":1,"FIL":1,"AVAX":1,"BCH":1,"LINK":1,"OP":1,"SOL":1,"ETH":1,"BNB":1,"DOT":1,"MATIC":1,"DOGE":1,"LTC":1,"XRP":1}
 class symbolInfo:
@@ -41,8 +41,6 @@ class symbolInfo:
         self.avg_price = 0
         self.mid_price = 0
         self.data = np.zeros(len_np)
-
-        self.lock = threading.Lock()  
 
         self.sum_price = 0
         self.num = 0
@@ -59,85 +57,84 @@ class symbolInfo:
         return False  
 
     def calc(self, ask, bid, stamp1):
-        with self.lock:
-            stamp = int(stamp1)
-            self.mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
-            self.index_np = self.last_time_stamp % len_np
+        stamp = int(stamp1)
+        self.mid_price = (Decimal(ask) + Decimal(bid)) / Decimal(2)
+        self.index_np = self.last_time_stamp % len_np
 
-            if self.last_time_stamp != int(stamp / 1000):
-                print("52 symbol : {}, index_np : {}, last_index_np : {}, last_time_stamp : {}, stamp : {}".format(self.symbol, self.index_np, self.last_index_np, self.last_time_stamp, stamp))
+        if self.last_time_stamp != int(stamp / 1000):
+            print("52 symbol : {}, index_np : {}, last_index_np : {}, last_time_stamp : {}, stamp : {}".format(self.symbol, self.index_np, self.last_index_np, self.last_time_stamp, stamp))
 
-                self.last_time_stamp = int(stamp / 1000)
+            self.last_time_stamp = int(stamp / 1000)
 
-                self.sum_price = 0
-                self.num = 0
+            self.sum_price = 0
+            self.num = 0
+            
+            self.sum_price = self.sum_price + self.mid_price
+            self.num = self.num + 1
+
+            self.avg_price = self.sum_price / self.num
+
+            if self.index_np == self.last_index_np:
+                self.data[self.last_index_np] = self.avg_price
+
+            if self.index_np > self.last_index_np:
+                if self.index_np < len_np:
+                    self.data[self.last_index_np:self.index_np] = self.avg_price
+                # logger.info("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
+
+            if self.index_np < self.last_index_np:
+                self.data[self.last_index_np:len_np] = self.avg_price
+
+                # logger.info("75 symbol : {}, index_np : {}, last_index_np : {}, avg_price : {}".format(self.symbol, self.index_np, self.last_index_np, self.avg_price, ))
+                # logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
+                # with lock:
+                #     if dict[self.base_symbol] == 0:
+                #         self.last_index_np = self.index_np
+                #         dict[self.base_symbol] = 1
+                #         return
+                time_calc(self)
+                return
+            
+            self.last_index_np = self.index_np            
+
+        else:
+            self.sum_price = self.sum_price + self.mid_price
+            self.num = self.num + 1
+
+            self.avg_price = self.sum_price / self.num
+            
+            if self.index_np == self.last_index_np:
+                self.data[self.last_index_np] = self.avg_price
                 
-                self.sum_price = self.sum_price + self.mid_price
-                self.num = self.num + 1
+            # if self.index_np > self.last_index_np:
+            #     self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
 
-                self.avg_price = self.sum_price / self.num
-
-                if self.index_np == self.last_index_np:
-                    self.data[self.last_index_np] = self.avg_price
-
-                if self.index_np > self.last_index_np:
-                    if self.index_np < len_np:
-                        self.data[self.last_index_np:self.index_np] = self.avg_price
-                    # logger.info("69 symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.index_np, self.last_index_np))
-
-                if self.index_np < self.last_index_np:
-                    self.data[self.last_index_np:len_np] = self.avg_price
-
-                    # logger.info("75 symbol : {}, index_np : {}, last_index_np : {}, avg_price : {}".format(self.symbol, self.index_np, self.last_index_np, self.avg_price, ))
-                    # logger.info("common symbol : {}, op symbol : {}, index_np : {}, last_index_np : {}".format(self.symbol, self.op_symbol , self.index_np, self.last_index_np))
-                    # with lock:
-                    #     if dict[self.base_symbol] == 0:
-                    #         self.last_index_np = self.index_np
-                    #         dict[self.base_symbol] = 1
-                    #         return
-                    self.time_calc()
-                    return
-                
-                self.last_index_np = self.index_np            
-
-            else:
-                self.sum_price = self.sum_price + self.mid_price
-                self.num = self.num + 1
-
-                self.avg_price = self.sum_price / self.num
-                
-                if self.index_np == self.last_index_np:
-                    self.data[self.last_index_np] = self.avg_price
-                    
-                # if self.index_np > self.last_index_np:
-                #     self.data[(self.last_index_np+1):(self.index_np+1)] = self.avg_price
-
-
-    def time_calc(self):
-        value = dic[self.symbol]
+def time_calc(key):
+    with lock:
+        value = dic[key.symbol]
         utc_now = datetime.utcnow() 
 
         value.data[value.last_index_np:len_np] = value.avg_price
-        key_mean = np.mean(self.data)
+        key_mean = np.mean(key.data)
         value_mean = np.mean(value.data)
         # value.data[(len_np + value.index_np - 1) % len_np]
-        logger.info(f"self.symbol : {self.symbol}, self.index : {self.index_np}, self.lastindex : {self.last_index_np}, value.index : {value.index_np}, value.lastindex : {value.last_index_np}, sel mid_p : {self.mid_price}, value mid_p : {value.mid_price}, self.data : {self.data}, value.data : {value.data}")
+        logger.info(f"key.symbol : {key.symbol}, key.index : {key.index_np}, key.lastindex : {key.last_index_np}, value.index : {value.index_np}, value.lastindex : {value.last_index_np}, sel mid_p : {key.mid_price}, value mid_p : {value.mid_price}, key.data : {key.data}, value.data : {value.data}")
 
         mean_thresh = 0
-        if "USDT" in self.symbol:
+        if "USDT" in key.symbol:
             mean_thresh = (key_mean - value_mean) / value_mean
         else:
             mean_thresh = (value_mean - key_mean) / key_mean
 
         data = np.zeros(0)
         
-        if "USDT" in self.symbol:
+        if "USDT" in key.symbol:
             for i in range(len_np):
-                new_data = np.array([self.data[i] - value.data[i]])
+                new_data = np.array([key.data[i] - value.data[i]])
                 data = np.concatenate((data, new_data))
         else:
             for i in range(len_np):
-                new_data = np.array([value.data[i] - self.data[i]])
+                new_data = np.array([value.data[i] - key.data[i]])
                 data = np.concatenate((data, new_data)) 
 
         mean_thresh_value = np.mean(data) 
@@ -161,17 +158,17 @@ class symbolInfo:
         spread_thresh = np.mean(spread_data)
         """
 
-        logger.info("calc std mean : {}, data : {}, spread_data : {}, mean_thresh_value : {}, spread_thresh : {}, md_price : {}".format(self.symbol, data, spread_data, mean_thresh_value, spread_thresh, self.mid_price))
+        logger.info("calc std mean : {}, data : {}, spread_data : {}, mean_thresh_value : {}, spread_thresh : {}, md_price : {}".format(key.symbol, data, spread_data, mean_thresh_value, spread_thresh, key.mid_price))
         
-        logger.info(f"time_calc symbol : {self.symbol}, value symbol : {value.symbol}, key avg_price : {self.avg_price}, value avg_value : {value.avg_price} , key mean : {key_mean}, value mean : {value_mean}, mean_thresh : {mean_thresh}, mean_thresh_value : {mean_thresh_value}, std thresh : {spread_thresh}, value index data : {value.data[value.index_np]}, value lastindex data : {value.data[value.last_index_np]}, time : {utc_now}")
+        logger.info(f"time_calc symbol : {key.symbol}, value symbol : {value.symbol}, key avg_price : {key.avg_price}, value avg_value : {value.avg_price} , key mean : {key_mean}, value mean : {value_mean}, mean_thresh : {mean_thresh}, mean_thresh_value : {mean_thresh_value}, std thresh : {spread_thresh}, value index data : {value.data[value.index_np]}, value lastindex data : {value.data[value.last_index_np]}, time : {utc_now}")
             
         if mean_thresh >= 0.0008 or mean_thresh <= -0.0008:
-            logger.info(f"vaild symbol : {self.symbol}, value symbol : {value.symbol}, key avg_price : {self.avg_price}, value avg_value : {value.avg_price} , key mean : {key_mean}, value mean : {value_mean}, mean thresh : {mean_thresh}, std thresh : {spread_thresh}, value index data : {value.data[value.index_np]}, value lastindex data : {value.data[value.index_np]}, mean_thresh_value : {mean_thresh_value}, time : {utc_now}")
+            logger.info(f"vaild symbol : {key.symbol}, value symbol : {value.symbol}, key avg_price : {key.avg_price}, value avg_value : {value.avg_price} , key mean : {key_mean}, value mean : {value_mean}, mean thresh : {mean_thresh}, std thresh : {spread_thresh}, value index data : {value.data[value.index_np]}, value lastindex data : {value.data[value.index_np]}, mean_thresh_value : {mean_thresh_value}, time : {utc_now}")
         
-        # self.data.fill(self.avg_price)
+        # key.data.fill(key.avg_price)
         # value.data.fill(value.avg_price)
-        self.last_index_np = 0
-        self.index_np = 0
+        key.last_index_np = 0
+        key.index_np = 0
         value.last_index_np = 0
         value.index_np = 0
 
