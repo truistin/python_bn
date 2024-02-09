@@ -121,7 +121,7 @@ class symbolInfo:
         key_mean = np.mean(self.data)
         value_mean = np.mean(value.data)
         # value.data[(len_np + value.index_np - 1) % len_np]
-        logger.info("self.symbol : {}, self.index : {}, self.lastindex : {}, value.index : {}, value.lastindex : {}, self.data : {}, value.data : {}".format(self.symbol, self.index_np, self.last_index_np, value.index_np, value.last_index_np, self.data, value.data))
+        logger.info(f"self.symbol : {self.symbol}, self.index : {self.index_np}, self.lastindex : {self.last_index_np}, value.index : {value.index_np}, value.lastindex : {value.last_index_np}, self num : {self.num}, value num : {value.num}, sel mid_p : {self.mid_price}, value mid_p : {value.mid_price}, self.data : {self.data}, value.data : {value.data}")
 
         mean_thresh = 0
         if "USDT" in self.symbol:
