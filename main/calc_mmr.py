@@ -224,11 +224,12 @@ class BinanceMR(object):
         for symbol, val in self.marginPositions.items(): #杠杆现货mm
             leverage = self.margin_leverage[symbol] if symbol in self.margin_leverage.keys() else self.margin_leverage['default']
             if symbol in ('USDT', 'USDC', 'BUSD'):
-                mm = Decimal(0)
+                # mm = Decimal(0)
+                mm = Decimal(val['crossMarginBorrowed']) * Decimal(self.margin_mmr[10])  * Decimal(1) #维持保证金
             else:
                 price = self.get_last_price(symbol)
                 mm = Decimal(val['crossMarginBorrowed']) * Decimal(self.margin_mmr[leverage])  * Decimal(price) #维持保证金
-                sum_mm += mm
+            sum_mm += mm
 
         for symbol, val in self.umPositions.items(): #u本位mm
             markPrice = Decimal(val['markPrice'])
