@@ -219,17 +219,18 @@ class BinanceMR(object):
         response = self.origin_api_clt._request_margin_api('get', 'um/account', True, data = params)
         return response
 
-    def calc_mm(self):
+    def calc_mm(self): #维持保证金
         sum_mm = Decimal(0)
         for symbol, val in self.marginPositions.items(): #杠杆现货mm
             leverage = self.margin_leverage[symbol] if symbol in self.margin_leverage.keys() else self.margin_leverage['default']
             if symbol in ('USDT', 'USDC', 'BUSD'):
-                # mm = Decimal(0)
                 mm = Decimal(val['crossMarginBorrowed']) * Decimal(self.margin_mmr[10])  * Decimal(1) #维持保证金
+                sum_mm += mm
+                #mm = Decimal(0)
             else:
                 price = self.get_last_price(symbol)
                 mm = Decimal(val['crossMarginBorrowed']) * Decimal(self.margin_mmr[leverage])  * Decimal(price) #维持保证金
-            sum_mm += mm
+                sum_mm += mm
 
         for symbol, val in self.umPositions.items(): #u本位mm
             markPrice = Decimal(val['markPrice'])
@@ -250,7 +251,7 @@ class BinanceMR(object):
         
         return sum_mm
             
-    def calc_equity(self):
+    def calc_equity(self): #计算调整后净值 * 抵押率
         sum_equity = Decimal(0)
         for symbol, val in self.marginPositions.items():
             if Decimal(val['crossMarginAsset']) != 0 or Decimal(val['crossMarginBorrowed']) != 0:
@@ -276,6 +277,47 @@ class BinanceMR(object):
                 print('cm', f"{val['asset']}USD_PERP", '币本位钱包余额:',val['cmWalletBalance'],'币本位未实现盈亏:', val['cmUnrealizedPNL'], 'equity:', calc_equity)
         return sum_equity
 
+    def calc_balance(self): #计算资产
+        #获取um_account
+        sum_usdt = 0
+        um_balances = []
+        info = self.origin_api_clt.futures_account()
+        for asset_ex in info['assets']:
+            um_balance = {}
+            um_balance['symbol'] = asset_ex['asset']
+            um_balance['available'] = Decimal(asset_ex['crossWalletBalance'])
+            um_balance['unpnl'] = Decimal(asset_ex['crossUnPnl'])
+            um_balances.append(um_balance)
+            if asset_ex['asset'] in ('USDT', 'USDC', 'BUSD'):
+                sum_usdt += (um_balance['available'] + um_balance['unpnl']) * Decimal(1)
+            else:
+                sum_usdt += (um_balance['available'] + um_balance['unpnl']) * Decimal(self.get_last_price(asset_ex['asset']))
+        #获取cm_account
+        cm_balances = []
+        info = self.origin_api_clt.futures_coin_account()
+        for asset_ex in info['assets']:
+            cm_balance = {}
+            cm_balance['symbol'] = asset_ex['asset']
+            cm_balance['available'] = Decimal(asset_ex['crossWalletBalance'])
+            cm_balance['unpnl'] = Decimal(asset_ex['crossUnPnl'])
+            cm_balances.append(cm_balance)
+            sum_usdt += (cm_balance['available'] + cm_balance['unpnl']) * Decimal(self.get_last_price(asset_ex['asset']))
+        #获取margin_account
+        margin_balances = []
+        info = self.origin_api_clt.get_margin_asset()
+        for asset_ex in info:
+            margin_balance = {}
+            margin_balance['symbol'] = asset_ex['asset']
+            margin_balance['available'] = Decimal(asset_ex['crossMarginFree'])
+            margin_balance['freeze'] = Decimal(asset_ex['crossMarginLocked'])
+            margin_balance['debt'] = Decimal(asset_ex['crossMarginBorrowed'])
+            margin_balance['interest'] = Decimal(asset_ex['crossMarginInterest'])
+            margin_balances.append(margin_balance)
+            if asset_ex['asset'] in ('USDT', 'USDC', 'BUSD'):
+                sum_usdt += (margin_balance['available'] + margin_balance['freeze'] - margin_balance['debt'] - margin_balance['interest']) * Decimal(1)
+            else:
+                sum_usdt += (margin_balance['available'] + margin_balance['freeze'] - margin_balance['debt'] - margin_balance['interest']) * Decimal(self.get_last_price(asset_ex['asset']))
+        return sum_usdt
 
 if __name__ == '__main__':
     #apikey = 'qrNt0VO8sdAbeLS0bAMbtDyip67ZwVUFU6XGVtlQw1anjeiyLOwfNrcVdqIAMyMR'
@@ -286,5 +328,6 @@ if __name__ == '__main__':
     binanceMr.initialize()
     print(binanceMr.calc_uniMMR()) # 计算uniMMR
     print(binanceMr.get_uniMMR()) # 接口获取uniMMR
+    print(binanceMr.calc_balance())
     
    
